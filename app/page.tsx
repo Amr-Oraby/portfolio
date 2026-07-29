@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-
 export default function Page() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -9,6 +9,8 @@ export default function Page() {
           <span className="text-foreground">Hello, I&apos;m </span>
           <span className="text-blue-600 dark:text-blue-400">Oraby</span>
         </h1>
+
+        <Button variant="outline">Hire me </Button>
 
         {/* Introduction */}
         <p className="text-lg text-muted-foreground mb-8">
