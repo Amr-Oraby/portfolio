@@ -1,5 +1,13 @@
+import { HomeBackground } from "@/components/HomeBackground";
+import Navbar from "@/components/Navbar";
+
 function page() {
-  return <div>initil page</div>;
+  return (
+    <HomeBackground>
+      <Navbar />
+      <main></main>
+    </HomeBackground>
+  );
 }
 
 export default page;
