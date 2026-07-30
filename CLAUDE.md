@@ -1,112 +1,178 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with this repository.
 
-## Project Overview
+---
 
-This is a Next.js 16 portfolio website using the App Router architecture with React 19 and Tailwind CSS 4.
+# Project Overview
 
-## Development Commands
+This is a premium frontend developer portfolio built with:
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- shadcn/ui
+- Framer Motion (for animations)
+
+The project focuses on premium UI, smooth interactions, accessibility, and clean architecture.
+
+---
+
+# Development Commands
 
 ```bash
-npm run dev    # Start development server at http://localhost:3000
-npm run build  # Build production-ready application
-npm run start  # Start production server (after build)
-npm run lint   # Run ESLint to check for issues
+npm run dev
+npm run build
+npm run start
+npm run lint
 ```
 
-## Architecture
+---
 
-### Project Structure
+# Project Structure
 
-- `app/` - Next.js App Router directory (React Server Components by default)
-  - `layout.tsx` - Root layout component (wraps all pages)
-  - `page.tsx` - Home page
-  - `globals.css` - Global styles (Tailwind CSS 4 with CSS variables for theming)
-- `public/` - Static assets (currently empty)
+```
+app/
+│
+├── data/          # Static portfolio data
+├── features/      # Feature-based sections
+│   ├── hero/
+│   ├── about/
+│   ├── projects/
+│   ├── services/
+│   ├── skills/
+│   ├── timeline/
+│   ├── contact/
+│   └── footer/
+│
+├── hooks/         # Custom React hooks
+├── types/         # Shared TypeScript types
+│
+├── favicon.ico
+├── globals.css
+├── layout.tsx
+└── page.tsx
 
-### Key Technologies
+components/
+│
+├── animations/    # Reusable animation components
+└── ui/            # shadcn/ui components
 
-- **Next.js 16** - App Router (file-system based routing)
-- **React 19** - With React Server Components and Actions
-- **Tailwind CSS 4** - CSS-in-JS approach with `@tailwindcss/postcss`
-- **TypeScript** - Strict mode enabled, path aliases configured (`@/*`)
-- **ESLint 9** - Flat config format
+constants/         # Navigation, socials, configuration
 
-### Styling
+lib/               # Shared utilities
 
-Uses Tailwind CSS 4 with CSS variables for theming. The `@theme inline` directive in `globals.css` enables theme-aware styling. Dark mode is supported via `prefers-color-scheme`.
+providers/         # Context providers (Theme, etc.)
 
-## Important Notes
+public/
+│
+├── fonts/
+├── icons/
+└── images/
+```
 
-### Next.js 16 Breaking Changes
+---
 
-**This is NOT the Next.js you may be familiar with.** APIs, conventions, and file structure have breaking changes in Next.js 16. Always check `node_modules/next/dist/docs/` for the most current documentation and heed any deprecation notices.
+# Architecture Rules
 
-### No Tests Configured
+- Use feature-based architecture.
+- Every website section belongs inside `app/features`.
+- Keep shadcn components inside `components/ui`.
+- Keep reusable animation components inside `components/animations`.
+- Store reusable utilities inside `lib`.
+- Store static content inside `app/data`.
+- Store application constants inside `constants`.
+- Store providers inside `providers`.
+- Prefer Server Components unless interactivity requires `"use client"`.
 
-This project does not have a test framework configured. Consider adding vi, Vitest, or Playwright when tests are needed.
+---
 
-### File Naming
+# Code Style
 
-- Route files: `page.tsx` for pages, `layout.tsx` for layouts
-- No `pages/` directory - uses App Router exclusively
-- No `getServerSideProps` or `getStaticProps` - use Server Components or RSC streaming instead
+- TypeScript only.
+- Functional components only.
+- Prefer Server Components.
+- Keep components small and composable.
+- Avoid prop drilling when unnecessary.
+- Use descriptive names.
+- Avoid unnecessary comments.
+- Write production-ready code.
 
-## MCP Usage Policy
+---
 
-### General Rule
+# UI Principles
 
-- Prefer your built-in knowledge before using any MCP server.
-- Do not call MCP tools unless they provide clear additional value.
-- Keep tool calls and returned context to a minimum to reduce token usage.
+The portfolio should feel:
 
-### Context7
+- Premium
+- Minimal
+- Editorial
+- Timeless
+- Interactive
+- Elegant
 
-Only use Context7 when:
+Avoid:
 
-- I explicitly ask for the latest documentation.
-- You are uncertain about a library API.
-- You need to verify information that may have changed recently.
-- You need official documentation for a library, framework, SDK, or API.
+- Generic developer portfolio layouts
+- Dashboard-like UI
+- Unnecessary visual clutter
+- Overengineering
 
-Do NOT use Context7 for:
+Animations should enhance the experience, never distract from it.
 
-- React fundamentals
-- Next.js concepts you already know
-- TypeScript
-- JavaScript
-- CSS or Tailwind basics
-- Common frontend patterns
-- General programming questions
+---
 
-### Playwright
+# Performance
 
-Only use Playwright when I explicitly request browser automation or testing, such as:
+- Optimize images.
+- Lazy load when appropriate.
+- Avoid unnecessary client components.
+- Minimize bundle size.
+- Prefer CSS over JavaScript when possible.
 
-- End-to-end testing
+---
+
+# Important
+
+Do NOT scan or read the entire project to answer a question.
+
+Only inspect the files that are directly relevant to the current task.
+
+Preserve the existing architecture and naming conventions unless explicitly asked to refactor them.
+
+---
+
+# MCP Usage Policy
+
+## Context7
+
+Use Context7 only when:
+
+- I explicitly ask for official documentation.
+- You are unsure about a library API.
+- The information may have changed recently.
+
+Do not use it for React, Next.js fundamentals, JavaScript, TypeScript, CSS, Tailwind, or common frontend concepts.
+
+## Playwright
+
+Use Playwright only when I explicitly request:
+
+- Browser testing
 - UI verification
 - Screenshots
-- Browser debugging
-- Accessibility checks
-- Responsive layout testing
+- Accessibility testing
+- Responsive testing
 
-Do NOT use Playwright for:
+Never use Playwright for reading or reviewing source code.
 
-- Reading source code
-- Reviewing React components
-- Explaining code
-- Static analysis
-- Refactoring
+---
 
-### Decision Process
+Always optimize for:
 
-Before using any MCP server, ask yourself:
-
-1. Can I answer accurately from my existing knowledge?
-2. Is the MCP result likely to improve the answer significantly?
-3. Did the user explicitly request documentation or browser interaction?
-
-If the answer is **No**, do not use the MCP tool.
-
-Always optimize for low token usage while maintaining high-quality answers.
+- Clean architecture
+- Maintainability
+- Accessibility
+- Performance
+- Low token usage
