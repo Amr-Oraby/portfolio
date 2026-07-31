@@ -17,10 +17,10 @@ function HeroContent() {
         <div className="absolute -top-[0px] -left-[0px] w-[52px] h-[52px] border-t border-l border-gray-400"></div>
 
         {/* Bottom Right Crop Mark */}
-        <div className="absolute -bottom-[0] -right-[0] w-[52px] h-[52px] border-b border-r border-gray-400"></div>
+        <div className="absolute -bottom-[0] right-[0] 2xl:right-6.5 w-[52px] h-[52px] border-b border-r border-gray-400"></div>
 
         {/* Portrait Placeholder */}
-        <div className="w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]  relative z-10">
+        <div className="bg-blue-200  w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]  relative z-10">
           <img src="images/portrait.png" className="w-full h-full" alt="" />
         </div>
 
