@@ -1,13 +1,13 @@
 import { HomeBackground } from "@/components/HomeBackground";
 import Navbar from "@/components/Navbar";
 
-function page() {
+import Hero from "./features/hero/Hero";
+
+export default function Page() {
   return (
     <HomeBackground>
       <Navbar />
-      <main></main>
+      <Hero />
     </HomeBackground>
   );
 }
-
-export default page;
