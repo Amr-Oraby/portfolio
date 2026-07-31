@@ -12,7 +12,7 @@ function HeroContent() {
       </div>
 
       {/* Portrait Section */}
-      <div className="relative z-1 p-2 sm:p-3 w-fit -left-[85px] md:left-0 sm:ml-0   ">
+      <div className="relative z-1 p-2 sm:p-3 w-fit -left-[85px] md:left-0 sm:ml-0 2xl:pr-10  ">
         {/* Top Left Crop Mark */}
         <div className="absolute -top-[0px] -left-[0px] w-[52px] h-[52px] border-t border-l border-gray-400"></div>
 
@@ -20,12 +20,12 @@ function HeroContent() {
         <div className="absolute -bottom-[0] -right-[0] w-[52px] h-[52px] border-b border-r border-gray-400"></div>
 
         {/* Portrait Placeholder */}
-        <div className="w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[320px] lg:h-[440px]  relative z-10">
+        <div className="w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]  relative z-10">
           <img src="images/portrait.png" className="w-full h-full" alt="" />
         </div>
 
         {/* Caption Row */}
-        <div className="hidden sm:block absolute bottom-[-20px] w-full pr-5 flex justify-between items-center text-[9px] tracking-[0.25em] text-gray-600 uppercase mt-1">
+        <div className="hidden sm:flex 2xl:pr-12 absolute bottom-[-20px] w-full pr-5 flex justify-between items-center text-[9px] tracking-[0.25em] text-gray-600 uppercase mt-1">
           <span>Fig. 001</span>
           <span className="w-3 h-px bg-gray-400"></span>
           <span>Portrait</span>

@@ -17,7 +17,9 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body>{children}</body>
+      <body className="selection:bg-[#1b1a18] selection:text-white">
+        {children}
+      </body>
     </html>
   );
 }
