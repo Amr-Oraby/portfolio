@@ -25,9 +25,11 @@ function SkillBadge({ skill }: SkillBadgeProps) {
 
 function SkillsList() {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap w-[215px] sm:w-full gap-2 ">
       {skills.map((skill, index) => (
-        <SkillBadge key={index} skill={skill} />
+        <div key={index}>
+          <SkillBadge skill={skill} />
+        </div>
       ))}
     </div>
   );
