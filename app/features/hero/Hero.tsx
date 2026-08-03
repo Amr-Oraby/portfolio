@@ -10,7 +10,7 @@ function Hero() {
   return (
     <>
       <Navbar />
-      <main className="pb-[100px]  pt-[50px] w-full font-sans text-gray-900   min-h-[539px] mx-auto ">
+      <main className="pb-25  pt-12.5 w-full font-sans text-gray-900   min-h-134.75 mx-auto ">
         <div className=" relative">
           <HeroTopBar />
           <LeftSideLabel />
