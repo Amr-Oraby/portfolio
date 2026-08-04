@@ -10,6 +10,8 @@ import SkillsList from "./SkillList";
 import Focus from "./Focus";
 import Location from "./Location";
 import ExperienceTimeline from "./ExperienceTimeline";
+import Education from "./Education";
+import Availability from "./Availability";
 
 const accordionData = [
   {
@@ -55,14 +57,14 @@ const accordionData = [
     hidden: "hidden md:block",
     icon: <GraduationCap className="w-6 h-6 stroke-[1.5]" />,
     header: "EDUCATION",
-    content: <p>content</p>,
+    content: <Education />,
   },
   {
     index: "05",
     hidden: "hidden md:block",
     icon: <Send className="w-6 h-6 stroke-[1.5]" />,
     header: "AVAILABILITY",
-    content: <p>content</p>,
+    content: <Availability />,
   },
   {
     index: "06",
