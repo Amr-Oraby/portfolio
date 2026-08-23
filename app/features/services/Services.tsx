@@ -9,51 +9,51 @@ import { RiBrushAiLine } from "react-icons/ri";
 const services = [
   {
     index: "01",
-    header: "Landing Pages",
-    icon: <BsWindowPlus />,
-    text: "High-converting, responsive landing pages designed to stand out and drive action.",
+    header: "Scalable Web Architecture",
+    icon: <MdOutlineWebStories />,
+    text: "Building robust, maintainable web architectures designed to scale seamlessly.",
   },
   {
     index: "02",
-    header: "Web Applications",
-    icon: <MdOutlineWebStories />,
-    text: "Scalable, modern web apps with clean architecture and smooth user experience.",
+    header: "UI Engineering",
+    icon: <RiBrushAiLine />,
+    text: "Architecting reusable component libraries for pixel-perfect, consistent user interfaces.",
   },
   {
     index: "03",
-    header: "UI Development",
-    icon: <RiBrushAiLine />,
-    text: "Pixel-perfect UI implementation from concept to production.",
+    header: "Complex Interfaces",
+    icon: <BsWindowPlus />,
+    text: "Engineering data-rich dashboards and dynamic portals with advanced state management.",
   },
   {
     index: "04",
-    header: "Performance & Accessibility",
+    header: "Performance & Optimization",
     icon: <MdOutlineRocketLaunch />,
-    text: "Optimized for speed, SEO, and accessible for everyone, everywhere.",
+    text: "Refactoring architectures for lightning-fast speeds and strict accessibility standards.",
   },
 ];
 
 function Services() {
   return (
-    <div className=" min-h-[600px] relative py-4 sm:py-15">
-      <div className=" -mb-5 sm:m-0 px-5 sm:px-15 flex items-center text-[12px] ">
-        <span className="w-2 h-2 bg-black rounded-full mr-3 "></span>
+    <div id="services" className=" min-h-[600px] relative py-4 sm:py-15">
+      <div className=" -mb-5 sm:m-0 px-5 sm:px-15 flex items-center text-[12px] text-main-gray">
+        <span className="w-2 h-2 bg-foreground rounded-full mr-3 "></span>
         <span>SERVICES</span>
       </div>
 
       <div className="px-5 sm:px-10 md:px-15  pr-5 sm:pr-14 md:pr-24">
-        <LeftSideLabel sectionNum={2} />
+        <LeftSideLabel sectionNum={4} />
         <RightSideLabel />
-        <div className="flex flex-col sm:flex-row gap-10 sm:gap-[300px] items-baseline ">
+        <div className="flex flex-col lg:flex-row gap-10 lg:justify-between items-baseline lg:items-end">
           <div
-            className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light `}
+            className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light text-foreground`}
           >
             <h1 className="text-[50px] xl:text-[60px]">What i can</h1>
             <h1 className="text-[50px] xl:text-[60px]">
               help you <span className="italic -skew-x-6">build</span>.
             </h1>
           </div>
-          <div className="max-w-[300px]">
+          <div className="max-w-[300px] text-main-gray">
             I design and build digital products that are fast, pixel-perfect,
             and crafted with purpose.
           </div>

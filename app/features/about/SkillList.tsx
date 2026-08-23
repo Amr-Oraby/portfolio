@@ -17,7 +17,7 @@ interface SkillBadgeProps {
 
 function SkillBadge({ skill }: SkillBadgeProps) {
   return (
-    <span className="px-3 py-1 text-xs font-medium text-gray-800 border border-gray-200 rounded-full">
+    <span className="px-3 py-1 text-xs font-medium text-foreground border border-border rounded-full">
       {skill}
     </span>
   );

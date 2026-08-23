@@ -77,9 +77,9 @@ const accordionData = [
 
 function About() {
   return (
-    <div className="min-h-[600px] relative py-4 sm:py-15">
-      <div className=" -mb-5 sm:m-0 px-5 sm:px-15 flex items-center text-[12px] ">
-        <span className="w-2 h-2 bg-black rounded-full mr-3 "></span>
+    <div id="about" className="min-h-[600px] relative py-4 sm:py-15">
+      <div className=" -mb-5 sm:m-0 px-5 sm:px-15 flex items-center text-[12px] text-main-gray">
+        <span className="w-2 h-2 bg-foreground rounded-full mr-3 "></span>
         <span>ABOUT</span>
       </div>
 
@@ -88,21 +88,21 @@ function About() {
         <RightSideLabel />
         <div className="text ">
           <div
-            className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light `}
+            className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light text-foreground`}
           >
             <h1 className="text-[50px] xl:text-[60px]">More about</h1>
             <h1 className="text-[50px] xl:text-[60px]">the developer.</h1>
           </div>
 
           <div className="mt-10 space-y-10">
-            <div className="w-11.5 h-px bg-gray-400 "></div>
-            <p className="text-gray-600 text-sm max-w-[270px]">
+            <div className="w-11.5 h-px bg-main-gray/30 "></div>
+            <p className="text-main-gray text-sm max-w-[270px]">
               i build fast,accessible and beautiful digital experiences that
               solve real problems and create impact.
             </p>
             <div className="flex gap-3 items-center">
-              <div className="w-11.5 h-px bg-gray-400"></div>
-              <div className="text-gray-600 font-bold text-xs">
+              <div className="w-11.5 h-px bg-main-gray/30"></div>
+              <div className="text-main-gray font-bold text-xs">
                 FOCUSING ON QUALITY & IMPACT
               </div>
             </div>
