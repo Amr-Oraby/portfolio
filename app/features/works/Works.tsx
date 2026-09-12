@@ -6,32 +6,23 @@ import ProjectCard, { Project } from "./ProjectCard";
 const projects: Project[] = [
   {
     index: "01",
-    category: "E-COMMERCE",
-    title: "Golden Beauty House",
-    description: "E-commerce frontend architecture with custom cart drawers and address management interfaces.",
-    tags: ["Next.js", "Tailwind CSS"],
+    category: "BOOKING SYSTEM",
+    title: "Almoatamer",
+    description: "Umrah booking website including auth, Google & Facebook auth, online payments, order management, and a 70+ pages dashboard.",
+    tags: ["Next.js", "Auth", "Payments", "Dashboard"],
+    link: "https://almoatamer.vercel.app/",
+    image: "/images/project 1.jpg",
   },
   {
     index: "02",
-    category: "CONCEPT",
-    title: "The Greek & SliceRush",
-    description: "Conceptual landing page designs for a modern fitness center and a high-energy pizza delivery brand.",
-    tags: ["UI / UX", "Landing Pages"],
+    category: "E-COMMERCE",
+    title: "Isaria",
+    description: "A product e-commerce website that allows users to place orders, featuring a comprehensive dashboard to control everything.",
+    tags: ["E-commerce", "Dashboard", "Orders"],
+    link: "https://isaria.vercel.app/",
+    image: "/images/project 2.jpg",
   },
-  {
-    index: "03",
-    category: "TOOL",
-    title: "Gaussian Elimination Solver",
-    description: "Interactive web-based mathematical tool featuring step-by-step calculation logs.",
-    tags: ["JavaScript", "Streamlit"],
-  },
-  {
-    index: "04",
-    category: "APPLICATION",
-    title: "Travel List",
-    description: "React application engineered for tracking shared expenses and splitting bills efficiently.",
-    tags: ["React"],
-  },
+
 ];
 
 export default function Works() {
