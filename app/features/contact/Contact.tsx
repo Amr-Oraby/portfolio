@@ -11,8 +11,8 @@ const contactData = [
     icon: <Mail className="w-5 h-5 stroke-[1.5]" />,
     initiallyOpen: true,
     content: (
-      <a href="mailto:hello@amroraby.com" className="text-foreground hover:opacity-70 transition-opacity">
-        hello@amroraby.com
+      <a href="mailto:amrorapy50@gmail.com" className="text-foreground hover:opacity-70 transition-opacity">
+        amrorapy50@gmail.com
       </a>
     ),
   },
@@ -50,11 +50,15 @@ const contactData = [
     initiallyOpen: false,
     content: (
       <div className="flex gap-6">
-        {["GitHub", "LinkedIn", "X"].map((social) => (
-          <a key={social} href="#" className="text-foreground font-medium hover:opacity-70 transition-opacity">
-            {social}
-          </a>
-        ))}
+        <a href="https://github.com/Amr-Oraby" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/amr-oraby-a87b69366/" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
+          LinkedIn
+        </a>
+        <a href="https://www.facebook.com/amr.rabi.2025" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
+          Facebook
+        </a>
       </div>
     ),
   },

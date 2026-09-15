@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button"; // Standard shadcn button import
+import { buttonVariants } from "@/components/ui/button"; 
+import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 export default function HeroCTA() {
   return (
@@ -17,9 +19,12 @@ export default function HeroCTA() {
 
       {/* Right Content: Buttons */}
       <div className="flex flex-row sm:flex-col  lg:flex-row items-start gap-4">
-        <Button
-          className="cursor-pointer group relative overflow-hidden flex h-10 sm:h-[52px] items-center rounded-full bg-foreground pl-5 sm:pl-6 pr-1.5 sm:pr-2 transition-all hover:bg-foreground/90 
-  before:absolute before:inset-0 before:content-[''] before:-translate-x-[150%] before:skew-x-[30deg] before:bg-gradient-to-r before:from-transparent before:via-background/60 before:to-transparent before:transition-transform before:duration-500 before:ease-out hover:before:translate-x-[150%]"
+        <Link
+          href="#works"
+          className={cn(
+            buttonVariants({ variant: "default" }),
+            "cursor-pointer group relative overflow-hidden flex h-10 sm:h-[52px] items-center rounded-full bg-foreground pl-5 sm:pl-6 pr-1.5 sm:pr-2 transition-all hover:bg-foreground/90 before:absolute before:inset-0 before:content-[''] before:-translate-x-[150%] before:skew-x-[30deg] before:bg-gradient-to-r before:from-transparent before:via-background/60 before:to-transparent before:transition-transform before:duration-500 before:ease-out hover:before:translate-x-[150%]"
+          )}
         >
           <span className="relative z-10 mr-4 sm:mr-6 text-[13px] sm:text-[14px] font-medium text-background">
             View Projects
@@ -30,11 +35,14 @@ export default function HeroCTA() {
               strokeWidth={2}
             />
           </div>
-        </Button>
+        </Link>
 
-        <Button
-          variant="outline"
-          className="cursor-pointer group flex h-10 sm:h-[52px] items-center rounded-full border border-foreground/20 hover:border-foreground bg-transparent pl-5 sm:pl-6 pr-1.5 sm:pr-2 transition-all hover:bg-foreground/5"
+        <Link
+          href="#contact"
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            "cursor-pointer group flex h-10 sm:h-[52px] items-center rounded-full border border-foreground/20 hover:border-foreground bg-transparent pl-5 sm:pl-6 pr-1.5 sm:pr-2 transition-all hover:bg-foreground/5"
+          )}
         >
           <span className="mr-4 sm:mr-6 text-[13px] sm:text-[14px] font-medium text-foreground">
             Contact Me
@@ -45,7 +53,7 @@ export default function HeroCTA() {
               strokeWidth={2.5}
             />
           </div>
-        </Button>
+        </Link>
       </div>
     </section>
   );
