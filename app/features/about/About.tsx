@@ -39,14 +39,14 @@ const accordionData = [
           {
             id: "1",
             title: "Frontend Developer",
-            company: "Nova Solutions",
-            period: "2021 — Present",
+            company: "Al Almiya Alhura",
+            period: "2026 — Present",
           },
           {
             id: "2",
-            title: "Junior Developer",
-            company: "Quantum Digital",
-            period: "2019 — 2021",
+            title: "Freelancer",
+            company: "Self-Employed",
+            period: "2025 — 2026",
           },
         ]}
       />
