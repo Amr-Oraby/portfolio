@@ -23,9 +23,8 @@ function Accordion({ data }: { data: AccordionItem }) {
           <span className="text-xs text-main-gray font-bold">{data.index}</span>
           <button className="cursor-pointer flex items-center justify-center p-1">
             <svg
-              className={`w-5 h-5 text-main-gray transition-transform duration-300 ${
-                isOpen ? "rotate-180" : "rotate-0"
-              }`}
+              className={`w-5 h-5 text-main-gray transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"
+                }`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
