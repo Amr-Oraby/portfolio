@@ -30,7 +30,7 @@ export default function ExperienceTimeline({ items }: ExperienceTimelineProps) {
               <p className="text-[11px] leading-relaxed text-main-gray">
                 {item.company}
               </p>
-              <p className="text-[11px] leading-relaxed text-main-gray/70">
+              <p className="text-[11px] leading-relaxed text-main-gray">
                 {item.period}
               </p>
             </div>

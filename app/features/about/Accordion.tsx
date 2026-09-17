@@ -21,7 +21,7 @@ function Accordion({ data }: { data: AccordionItem }) {
         </div>
         <div className="flex gap-3 items-center">
           <span className="text-xs text-main-gray font-bold">{data.index}</span>
-          <button className="cursor-pointer flex items-center justify-center p-1">
+          <button aria-label="Toggle accordion item" className="cursor-pointer flex items-center justify-center p-1">
             <svg
               className={`w-5 h-5 text-main-gray transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"
                 }`}

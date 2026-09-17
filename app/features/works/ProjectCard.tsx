@@ -38,13 +38,13 @@ export default function ProjectCard({ project }: { project: Project }) {
       <div className="p-8 sm:p-10 flex flex-col justify-between flex-1 gap-8">
         <div>
           <div className="flex justify-between items-start gap-4 mb-6">
-            <h3 className={`${fraunces.className} text-3xl sm:text-4xl font-medium text-foreground tracking-tight leading-tight max-w-[80%]`}>
+            <h2 className={`${fraunces.className} text-3xl sm:text-4xl font-medium text-foreground tracking-tight leading-tight max-w-[80%]`}>
               {project.title}
-            </h3>
+            </h2>
             
             {/* Arrow Button */}
             {project.link ? (
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 w-12 h-12 border border-border flex items-center justify-center group-hover:bg-foreground transition-colors duration-300 cursor-pointer">
+              <a aria-label="View Project" href={project.link} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 w-12 h-12 border border-border flex items-center justify-center group-hover:bg-foreground transition-colors duration-300 cursor-pointer">
                 <ArrowUpRight className="w-5 h-5 text-foreground group-hover:text-background transition-colors duration-300" />
               </a>
             ) : (

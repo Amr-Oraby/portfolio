@@ -23,7 +23,7 @@ function ContactAccordion({ data }: { data: ContactAccordionItem }) {
         </div>
         <div className="flex gap-3 items-center">
           <span className="text-xs text-main-gray font-bold">{data.index}</span>
-          <button className="cursor-pointer flex items-center justify-center p-1">
+          <button aria-label="Toggle contact accordion" className="cursor-pointer flex items-center justify-center p-1">
             <svg
               className={`w-4 h-4 text-main-gray transition-transform duration-300 ${
                 isOpen ? "rotate-180" : "rotate-0"

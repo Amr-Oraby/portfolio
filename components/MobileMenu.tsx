@@ -63,8 +63,8 @@ export function MobileMenu() {
   return (
     <div className="sm:hidden flex items-center">
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger className="text-foreground p-2 rounded-full hover:bg-foreground/5 transition-colors cursor-pointer">
-          <Menu className="w-5 h-5" />
+        <DrawerTrigger aria-label="Open mobile menu" className="text-foreground p-2 rounded-full hover:bg-foreground/5 transition-colors cursor-pointer">
+          <Menu className="w-5 h-5 text-foreground" />
         </DrawerTrigger>
         <DrawerContent className="bg-background border-t border-border focus:outline-none">
           <DrawerHeader className="text-left border-b border-border/50 pb-4">

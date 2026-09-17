@@ -33,11 +33,11 @@ export default function ServiceCard({ service }: ServiceCardProps) {
 
       {/* Bottom Row: Header, Text & Arrow */}
       <div>
-        <h3
+        <h2
           className={`${fraunces.className} text-3xl font-serif text-foreground mb-3 tracking-tight`}
         >
           {service.header}
-        </h3>
+        </h2>
 
         <div className="flex justify-between items-end gap-6">
           <p className="text-sm text-main-gray max-w-[280px] leading-relaxed">
