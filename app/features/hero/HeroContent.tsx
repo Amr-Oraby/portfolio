@@ -22,8 +22,8 @@ function HeroContent() {
         <div className="absolute -bottom-[0] right-[0] 2xl:right-6.5 w-[52px] h-[52px] border-b border-r border-main-gray/30"></div>
 
         {/* Portrait Placeholder */}
-        <div className="bg-blue-200  w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]  relative z-10">
-          <Image src="/images/portrait.png" fill priority className="object-cover" alt="Portrait" />
+        <div className="bg-blue-200 animate-float w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]  relative z-10">
+          <Image src="/images/portrait.png" fill priority className="object-cover grayscale" alt="Portrait" />
         </div>
 
         {/* Caption Row */}

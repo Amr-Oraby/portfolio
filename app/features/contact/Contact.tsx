@@ -50,14 +50,17 @@ const contactData = [
     initiallyOpen: false,
     content: (
       <div className="flex gap-6">
-        <a href="https://github.com/Amr-Oraby" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
-          GitHub
+        <a href="https://github.com/Amr-Oraby" target="_blank" rel="noopener noreferrer" className="relative inline-block text-foreground font-medium overflow-hidden group px-1">
+          <span className="relative z-10 group-hover:text-background transition-colors duration-300">GitHub</span>
+          <span className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
         </a>
-        <a href="https://www.linkedin.com/in/amr-oraby-a87b69366/" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
-          LinkedIn
+        <a href="https://www.linkedin.com/in/amr-oraby-a87b69366/" target="_blank" rel="noopener noreferrer" className="relative inline-block text-foreground font-medium overflow-hidden group px-1">
+          <span className="relative z-10 group-hover:text-background transition-colors duration-300">LinkedIn</span>
+          <span className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
         </a>
-        <a href="https://www.facebook.com/amr.rabi.2025" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
-          Facebook
+        <a href="https://www.facebook.com/amr.rabi.2025" target="_blank" rel="noopener noreferrer" className="relative inline-block text-foreground font-medium overflow-hidden group px-1">
+          <span className="relative z-10 group-hover:text-background transition-colors duration-300">Facebook</span>
+          <span className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
         </a>
       </div>
     ),

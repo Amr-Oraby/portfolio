@@ -18,7 +18,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       {/* Top Image Placeholder */}
       <div className="relative w-full h-[250px] sm:h-[350px] bg-foreground/5 flex items-center justify-center transition-colors duration-500 group-hover:bg-foreground/10">
         {project.image ? (
-          <Image src={project.image} alt={project.title} fill className="object-cover" />
+          <Image src={project.image} alt={project.title} fill className="object-cover grayscale opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
         ) : (
           <span className="text-main-gray/40 font-medium tracking-[0.3em] text-xs uppercase">Project Media</span>
         )}

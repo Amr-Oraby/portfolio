@@ -1,5 +1,7 @@
 import { HomeBackground } from "@/components/HomeBackground";
 import Hero from "./features/hero/Hero";
+import Marquee from "@/components/Marquee";
+import TechMarquee from "@/components/TechMarquee";
 import dynamic from "next/dynamic";
 
 const About = dynamic(() => import("./features/about/About"));
@@ -11,7 +13,9 @@ export default function Page() {
   return (
     <HomeBackground>
       <Hero />
+      <Marquee />
       <About />
+      <TechMarquee />
       <Works />
       <Services />
       <Contact />
