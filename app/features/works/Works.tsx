@@ -6,15 +6,6 @@ import ProjectCard, { Project } from "./ProjectCard";
 const projects: Project[] = [
   {
     index: "01",
-    category: "BOOKING SYSTEM",
-    title: "Almoatamer",
-    description: "Umrah booking website including auth, Google & Facebook auth, online payments, order management, and a 70+ pages dashboard.",
-    tags: ["Next.js", "Auth", "Payments", "Dashboard"],
-    link: "https://almoatamer.vercel.app/",
-    image: "/images/project 1.jpg",
-  },
-  {
-    index: "02",
     category: "E-COMMERCE",
     title: "Isaria",
     description: "A modern perfume e-commerce platform built with Next.js, Shadcn UI, Tailwind CSS, and Zod. Features a seamless purchasing flow, beautiful animations, carousels, and a comprehensive dashboard.",
@@ -22,6 +13,16 @@ const projects: Project[] = [
     link: "https://isaria.vercel.app/",
     image: "/images/project 2.jpg",
   },
+  {
+    index: "02",
+    category: "BOOKING SYSTEM",
+    title: "Almoatamer",
+    description: "Umrah booking website including auth, Google & Facebook auth, online payments, order management, and a 70+ pages dashboard.",
+    tags: ["Next.js", "Auth", "Payments", "Dashboard"],
+    link: "https://almoatamer.vercel.app/",
+    image: "/images/project 1.jpg",
+  },
+
 
 ];
 
@@ -36,10 +37,10 @@ export default function Works() {
       <div className="flex flex-col gap-10 sm:gap-20 px-5 sm:px-10 md:px-15 pr-5 sm:pr-14 md:pr-24">
         <LeftSideLabel sectionNum={3} />
         <RightSideLabel />
-        
+
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row gap-6 md:gap-8 xl:gap-20 justify-between items-center sm:items-start">
-          
+
           <div className="w-full flex flex-col lg:flex-row lg:items-end justify-between gap-10 lg:gap-20">
             <div className={`${fraunces.className} pt-10 sm:ml-6 -space-y-4 font-light text-foreground`}>
               <h1 className="text-[60px] xl:text-[80px] tracking-tight leading-none">Selected</h1>
@@ -50,7 +51,7 @@ export default function Works() {
               <p className="text-sm text-main-gray leading-relaxed">
                 A curated collection of products I've architected and designed — from e-commerce frontends to interactive mathematical tools.
               </p>
-              
+
               <div className="flex items-center gap-4">
                 <div className="w-12 h-px bg-border"></div>
                 <span className="text-[10px] text-main-gray tracking-[0.2em] font-bold uppercase">
@@ -65,7 +66,7 @@ export default function Works() {
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-px bg-border sm:ml-6 mt-10 border border-border">
           {projects.map((project) => (
             <div key={project.index} className="bg-card">
-               <ProjectCard project={project} />
+              <ProjectCard project={project} />
             </div>
           ))}
         </div>
