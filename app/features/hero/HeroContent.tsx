@@ -1,4 +1,6 @@
 import { fraunces } from "@/public/fonts/Fraunces";
+import Image from "next/image";
+
 function HeroContent() {
   return (
     <div className=" p-3 flex justify-between sm:px-20 px-5  sm:pr-25 ">
@@ -21,7 +23,7 @@ function HeroContent() {
 
         {/* Portrait Placeholder */}
         <div className="bg-blue-200  w-[130px] h-[160px] sm:w-[200px] sm:h-[260px]  md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]  relative z-10">
-          <img src="images/portrait.png" className="w-full h-full" alt="" />
+          <Image src="/images/portrait.png" fill priority className="object-cover" alt="Portrait" />
         </div>
 
         {/* Caption Row */}
