@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/providers/theme-provider";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Your App",
-  description: "Your app description",
+  title: "Amr Oraby",
+  description: "Amr Oraby - Personal Portfolio",
 };
 
 type RootLayoutProps = Readonly<{

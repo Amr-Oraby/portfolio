@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .rect { fill: none; stroke: black; stroke-width: 4; }
+    .text { fill: black; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 40px; font-weight: 400; }
+    @media (prefers-color-scheme: dark) {
+      .rect { stroke: white; }
+      .text { fill: white; }
+    }
+  </style>
+  <rect x="2" y="2" width="60" height="60" class="rect" />
+  <text x="32" y="46" text-anchor="middle" class="text">A</text>
+</svg>
