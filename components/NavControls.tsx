@@ -11,6 +11,7 @@ function NavControls() {
     <div className="flex gap-5 items-center">
       <ThemeToggle />
       <Button
+        onClick={() => window.open("/cv.pdf", "_blank")}
         className={`${jetbrainsMono.className} bg-foreground text-background hover:bg-foreground/90 border-none text-sm py-4.5 px-5 sm:flex gap-2 items-center justify-center hidden rounded-full transition-all duration-300 cursor-pointer group`}
         size="sm"
       >

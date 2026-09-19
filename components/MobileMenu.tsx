@@ -91,6 +91,7 @@ export function MobileMenu() {
             <div className="w-full h-px bg-border/50"></div>
             
             <Button
+              onClick={() => window.open("/cv.pdf", "_blank")}
               className={`${jetbrainsMono.className} bg-foreground text-background hover:bg-foreground/90 border-none text-sm py-6 w-full flex gap-2 items-center justify-center rounded-full transition-all duration-300 cursor-pointer group`}
             >
               DOWNLOAD CV
