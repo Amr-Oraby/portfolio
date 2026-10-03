@@ -10,7 +10,7 @@ const projects: Project[] = [
     title: "Isaria",
     description: "A modern perfume e-commerce platform built with Next.js, Shadcn UI, Tailwind CSS, and Zod. Features a seamless purchasing flow, beautiful animations, carousels, and a comprehensive dashboard.",
     tags: ["Next.js", "Shadcn", "Tailwind", "E-commerce"],
-    link: "https://isaria.vercel.app/",
+    link: "https://isaria-perfume.shop",
     image: "/images/project 2.jpg",
   },
   {
