@@ -3,6 +3,7 @@ import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {children}
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-C02T0FQXN4" />
     </html>
   );
 }
