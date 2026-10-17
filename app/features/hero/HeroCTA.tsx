@@ -2,10 +2,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import styles from "./hero.module.css";
 
 export default function HeroCTA() {
   return (
-    <section className="mt-14 mx-5 sm:mx-20 flex justify-between">
+    <section className={`mt-14 mx-5 sm:mx-20 flex justify-between ${styles.supportingFade}`}>
       {/* Left Content: Typography */}
       <div className="max-w-[620px] hidden md:block">
         <p className="text-[1.125rem] font-medium leading-[1.65] text-foreground md:text-[1.1875rem]">

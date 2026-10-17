@@ -49,7 +49,7 @@ export default function TechMarquee() {
   );
 
   return (
-    <div className="relative flex overflow-hidden bg-background border-y border-border py-6 sm:py-8 my-12">
+    <div aria-hidden="true" className="relative flex overflow-hidden bg-background border-y border-border py-6 sm:py-8 my-12">
       <div className="animate-marquee whitespace-nowrap flex items-center">
         {marqueeContent}
         {marqueeContent}

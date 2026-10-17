@@ -7,12 +7,12 @@ type AccordionItem = {
   header: string;
   content: ReactNode;
 };
-function Accordion({ data }: { data: AccordionItem }) {
+function Accordion({ data, className = "" }: { data: AccordionItem; className?: string }) {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <div
       onClick={() => setIsOpen((o) => !o)}
-      className={` ${data.hidden} border  border-border bg-card text-card-foreground rounded-none ${isOpen ? "h-[320px] py-10" : "h-[65px] py-5"}   px-5 hover:-translate-y-[5px] transition-transform duration-300`}
+      className={` ${data.hidden} ${className} border  border-border bg-card text-card-foreground rounded-none ${isOpen ? "h-[320px] py-10" : "h-[65px] py-5"}   px-5 hover:-translate-y-[5px] transition-transform duration-300`}
     >
       <div className="flex items-center justify-between mb-6 cursor-pointer">
         <div className="flex text-xs font-bold items-center gap-3 ">

@@ -9,12 +9,12 @@ type ContactAccordionItem = {
   initiallyOpen?: boolean;
 };
 
-function ContactAccordion({ data }: { data: ContactAccordionItem }) {
+function ContactAccordion({ data, className = "" }: { data: ContactAccordionItem; className?: string }) {
   const [isOpen, setIsOpen] = useState(data.initiallyOpen || false);
   return (
     <div
       onClick={() => setIsOpen((o) => !o)}
-      className={`border border-border bg-card text-card-foreground rounded-none ${isOpen ? "py-6" : "h-[60px] py-5"} px-5 hover:-translate-y-[2px] transition-transform duration-300 w-full overflow-hidden cursor-pointer`}
+      className={`border border-border bg-card text-card-foreground rounded-none ${isOpen ? "py-6" : "h-[60px] py-5"} px-5 hover:-translate-y-[2px] transition-transform duration-300 w-full overflow-hidden cursor-pointer ${className}`}
     >
       <div className="flex items-center justify-between">
         <div className="flex text-xs font-bold items-center gap-3">

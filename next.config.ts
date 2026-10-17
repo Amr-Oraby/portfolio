@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react", "react-icons"],
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

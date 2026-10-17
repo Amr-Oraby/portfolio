@@ -1,7 +1,11 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { fraunces } from "@/public/fonts/Fraunces";
 import LeftSideLabel from "../hero/LeftSideLabel";
 import RightSideLabel from "../hero/RightSideLabel";
 import Accordion from "./Accordion";
+import styles from "./about.module.css";
 
 import { Briefcase, GraduationCap, Send, MapPin } from "lucide-react";
 import { SlTarget } from "react-icons/sl";
@@ -76,9 +80,57 @@ const accordionData = [
 ];
 
 function About() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    // Check if section is already in or near viewport on mount
+    const checkImmediateVisibility = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 50 && rect.bottom > 0) {
+        setInView(true);
+        return true;
+      }
+      return false;
+    };
+
+    if (checkImmediateVisibility()) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.05,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div id="about" className="min-h-[600px] relative py-4 sm:py-15">
-      <div className=" -mb-5 sm:m-0 px-5 sm:px-15 flex items-center text-[12px] text-main-gray">
+    <div
+      ref={sectionRef}
+      id="about"
+      className={`min-h-[600px] relative py-4 sm:py-15 ${inView ? styles.inView : ""}`}
+    >
+      <div className={` -mb-5 sm:m-0 px-5 sm:px-15 flex items-center text-[12px] text-main-gray ${styles.sectionBadge}`}>
         <span className="w-2 h-2 bg-foreground rounded-full mr-3 "></span>
         <span>ABOUT</span>
       </div>
@@ -90,17 +142,21 @@ function About() {
           <div
             className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light text-foreground`}
           >
-            <h1 className="text-[50px] xl:text-[60px]">More about</h1>
-            <h1 className="text-[50px] xl:text-[60px]">the developer.</h1>
+            <div className={styles.lineMask}>
+              <h1 className={`text-[50px] xl:text-[60px] ${styles.headingLine1}`}>More about</h1>
+            </div>
+            <div className={styles.lineMask}>
+              <h1 className={`text-[50px] xl:text-[60px] ${styles.headingLine2}`}>the developer.</h1>
+            </div>
           </div>
 
           <div className="mt-10 space-y-10">
-            <div className="w-11.5 h-px bg-main-gray/30 "></div>
-            <p className="text-main-gray text-sm max-w-[270px]">
+            <div className={`w-11.5 h-px bg-main-gray/30 ${styles.hairline1}`}></div>
+            <p className={`text-main-gray text-sm max-w-[270px] ${styles.manifestoText}`}>
               i build fast,accessible and beautiful digital experiences that
               solve real problems and create impact.
             </p>
-            <div className="flex gap-3 items-center">
+            <div className={`flex gap-3 items-center ${styles.focusTagline}`}>
               <div className="w-11.5 h-px bg-main-gray/30"></div>
               <div className="text-main-gray font-bold text-xs">
                 FOCUSING ON QUALITY & IMPACT
@@ -109,9 +165,13 @@ function About() {
           </div>
         </div>
 
-        <div className="accordion grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 flex-1 w-full">
-          {accordionData.map((acc) => (
-            <Accordion key={acc.index} data={acc} />
+        <div className={`accordion grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 flex-1 w-full ${styles.cardsGrid}`}>
+          {accordionData.map((acc, idx) => (
+            <Accordion
+              key={acc.index}
+              data={acc}
+              className={`${styles.cardItem} ${styles[`cardItem${idx + 1}`]}`}
+            />
           ))}
         </div>
       </div>

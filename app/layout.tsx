@@ -3,9 +3,9 @@ import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Analytics from "@/components/Analytics";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Amr Oraby",
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {children}
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-C02T0FQXN4" />
+      <Analytics />
     </html>
   );
 }

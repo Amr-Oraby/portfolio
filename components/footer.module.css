@@ -1,0 +1,14 @@
+/* Premium Editorial Motion for Footer */
+
+.footerContainer {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.inView {
+  opacity: 1;
+  transform: translateY(0);
+}
