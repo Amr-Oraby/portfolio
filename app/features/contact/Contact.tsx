@@ -7,6 +7,65 @@ import RightSideLabel from "../hero/RightSideLabel";
 import ContactAccordion from "./ContactAccordion";
 import styles from "./contact.module.css";
 import { Mail, Clock, MapPin, Share2, ArrowUpRight } from "lucide-react";
+import {
+  FaGithub,
+  FaLinkedinIn,
+  FaFacebookF,
+  FaWhatsapp,
+  FaInstagram,
+} from "react-icons/fa6";
+
+const socialRows = [
+  [
+    {
+      name: "GitHub",
+      href: "https://github.com/Amr-Oraby",
+      icon: FaGithub,
+      border: "border-neutral-700/60 hover:border-neutral-900 dark:border-neutral-300/60 dark:hover:border-white",
+      bgHover: "bg-neutral-950 dark:bg-neutral-100",
+      iconRest: "text-neutral-900 dark:text-neutral-100",
+      hoverText: "group-hover:text-white dark:group-hover:text-neutral-950",
+    },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/in/amr-oraby-a87b69366/",
+      icon: FaLinkedinIn,
+      border: "border-[#0A66C2]/70 hover:border-[#0A66C2]",
+      bgHover: "bg-gradient-to-r from-[#0077B5] to-[#0A66C2]",
+      iconRest: "text-[#0A66C2] dark:text-[#70b5f9]",
+      hoverText: "group-hover:text-white",
+    },
+    {
+      name: "WhatsApp",
+      href: "https://wa.me/201151708590",
+      icon: FaWhatsapp,
+      border: "border-[#25D366]/80 hover:border-[#25D366]",
+      bgHover: "bg-gradient-to-r from-[#25D366] to-[#128C7E]",
+      iconRest: "text-[#128C7E] dark:text-[#25D366]",
+      hoverText: "group-hover:text-white",
+    },
+  ],
+  [
+    {
+      name: "Instagram",
+      href: "https://www.instagram.com/0r4by/",
+      icon: FaInstagram,
+      border: "border-[#E1306C]/80 hover:border-[#E1306C]",
+      bgHover: "bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045]",
+      iconRest: "text-[#E1306C] dark:text-[#f56040]",
+      hoverText: "group-hover:text-white",
+    },
+    {
+      name: "Facebook",
+      href: "https://www.facebook.com/amr.rabi.2025",
+      icon: FaFacebookF,
+      border: "border-[#1877F2]/70 hover:border-[#1877F2]",
+      bgHover: "bg-gradient-to-r from-[#1877F2] to-[#0D65D9]",
+      iconRest: "text-[#1877F2] dark:text-[#6ba7f8]",
+      hoverText: "group-hover:text-white",
+    },
+  ],
+];
 
 const contactData = [
   {
@@ -53,19 +112,34 @@ const contactData = [
     icon: <Share2 className="w-5 h-5 stroke-[1.5]" />,
     initiallyOpen: true,
     content: (
-      <div className="flex gap-6">
-        <a href="https://github.com/Amr-Oraby" target="_blank" rel="noopener noreferrer" className="relative inline-block text-foreground font-medium overflow-hidden group pl-2 pr-2 border-l border-foreground/30 hover:border-foreground transition-colors">
-          <span className="relative z-10 group-hover:text-background transition-colors duration-300">GitHub</span>
-          <span className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
-        </a>
-        <a href="https://www.linkedin.com/in/amr-oraby-a87b69366/" target="_blank" rel="noopener noreferrer" className="relative inline-block text-foreground font-medium overflow-hidden group pl-2 pr-2 border-l border-foreground/30 hover:border-foreground transition-colors">
-          <span className="relative z-10 group-hover:text-background transition-colors duration-300">LinkedIn</span>
-          <span className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
-        </a>
-        <a href="https://www.facebook.com/amr.rabi.2025" target="_blank" rel="noopener noreferrer" className="relative inline-block text-foreground font-medium overflow-hidden group pl-2 pr-2 border-l border-foreground/30 hover:border-foreground transition-colors">
-          <span className="relative z-10 group-hover:text-background transition-colors duration-300">Facebook</span>
-          <span className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
-        </a>
+      <div className="flex flex-col gap-2.5 sm:gap-3">
+        {socialRows.map((row, rowIndex) => (
+          <div key={rowIndex} className="flex items-center gap-x-2 min-[360px]:gap-x-2.5 sm:gap-x-4">
+            {row.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`relative inline-flex items-center gap-1 sm:gap-1.5 font-medium overflow-hidden group pl-1.5 pr-1.5 sm:pl-2 sm:pr-2 py-0.5 border-l-2 bg-transparent transition-all duration-300 ${item.border}`}
+              >
+                <span className="relative z-10 flex items-center gap-1 sm:gap-1.5 transition-colors duration-300">
+                  <item.icon
+                    className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 transition-colors duration-300 ${item.iconRest} ${item.hoverText}`}
+                  />
+                  <span
+                    className={`text-[11px] min-[360px]:text-xs sm:text-sm whitespace-nowrap text-foreground transition-colors duration-300 ${item.hoverText}`}
+                  >
+                    {item.name}
+                  </span>
+                </span>
+                <span
+                  className={`absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out ${item.bgHover}`}
+                />
+              </a>
+            ))}
+          </div>
+        ))}
       </div>
     ),
   },
@@ -197,7 +271,7 @@ function Contact() {
       <div className="flex flex-col sm:flex-row gap-6 md:gap-8 xl:gap-20 2xl:gap-30 justify-between items-center sm:items-start px-5 sm:px-10 md:px-15 pr-5 sm:pr-14 md:pr-24">
         <LeftSideLabel sectionNum={5} />
         <RightSideLabel />
-        
+
         {/* Left Side: Header & Text */}
         <div className="text w-full sm:max-w-[400px]">
           <div
@@ -212,7 +286,7 @@ function Contact() {
               </h1>
             </div>
           </div>
-          
+
           <div className="mt-10 space-y-10 sm:ml-6 hidden sm:block">
             <div className={`w-11.5 h-px bg-main-gray/30 ${styles.hairline}`}></div>
             <p className={`text-main-gray text-sm max-w-[270px] ${styles.manifestoText}`}>
@@ -228,10 +302,10 @@ function Contact() {
         </div>
 
         {/* Right Side: Form + Cards */}
-        <div className="flex-1 w-full flex flex-col xl:flex-row gap-10 mt-10 sm:mt-10">
-          
+        <div className="flex-1 w-full flex flex-col xl:flex-row gap-8 mt-10 sm:mt-10">
+
           {/* Form */}
-          <div className="flex-1 min-w-[300px]">
+          <div className="flex-1 min-w-[290px]">
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
               <div className={`flex flex-col gap-2 ${styles.formField} ${styles.formField1}`}>
                 <label className="text-[10px] tracking-[0.25em] uppercase text-main-gray">
@@ -301,7 +375,7 @@ function Contact() {
                   <span className="text-xs tracking-wide">{status.message}</span>
                 </div>
               )}
-              
+
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -325,7 +399,7 @@ function Contact() {
           </div>
 
           {/* Right side (Info Accordions) */}
-          <div className={`w-full xl:w-[320px] flex flex-col gap-5 ${styles.accordionsCol}`}>
+          <div className={`w-full xl:w-[335px] flex flex-col gap-5 ${styles.accordionsCol}`}>
             {contactData.map((item, idx) => (
               <ContactAccordion
                 key={item.index}
