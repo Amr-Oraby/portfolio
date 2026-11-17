@@ -1,6 +1,6 @@
 import { buttonVariants } from "@/components/ui/button"; 
 import { cn } from "@/lib/utils";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import styles from "./hero.module.css";
 

@@ -13,13 +13,19 @@ export interface Service {
 interface ServiceCardProps {
   service: Service;
   className?: string;
+  topAccessory?: React.ReactNode;
 }
 
-export default function ServiceCard({ service, className = "" }: ServiceCardProps) {
+export default function ServiceCard({
+  service,
+  className = "",
+  topAccessory,
+}: ServiceCardProps) {
   // Retrieve the correct icon component, fallback to a default if not found
 
   return (
     <div className={`group relative flex flex-col justify-between min-h-[280px] p-10 bg-card hover:bg-foreground border border-border transition-colors duration-300 ${className}`}>
+      {topAccessory}
       {/* Top Row: Index & Icon */}
       <div className="flex justify-between items-start mb-12">
         <span

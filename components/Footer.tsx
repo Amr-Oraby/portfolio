@@ -25,8 +25,8 @@ export default function Footer() {
     if (checkImmediate()) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
+      const frame = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(

@@ -233,8 +233,8 @@ function Contact() {
     if (checkImmediateVisibility()) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
+      const frame = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
@@ -278,7 +278,7 @@ function Contact() {
             className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light text-foreground`}
           >
             <div className={styles.lineMask}>
-              <h1 className={`text-[50px] xl:text-[60px] ${styles.headingLine1}`}>Let's work</h1>
+              <h1 className={`text-[50px] xl:text-[60px] ${styles.headingLine1}`}>Let&apos;s work</h1>
             </div>
             <div className={styles.lineMask}>
               <h1 className={`text-[50px] xl:text-[60px] ${styles.headingLine2}`}>

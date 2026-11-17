@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { fraunces } from "@/public/fonts/Fraunces";
 import LeftSideLabel from "../hero/LeftSideLabel";
 import RightSideLabel from "../hero/RightSideLabel";
@@ -100,8 +101,8 @@ function About() {
     if (checkImmediateVisibility()) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
+      const frame = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
@@ -138,7 +139,7 @@ function About() {
       <div className="flex flex-col sm:flex-row gap-6 md:gap-8 xl:gap-20 2xl:gap-30  justify-between items-center sm:items-start px-5 sm:px-10 md:px-15  pr-5 sm:pr-14 md:pr-24">
         <LeftSideLabel sectionNum={2} />
         <RightSideLabel />
-        <div className="text ">
+        <div className="text relative w-full sm:w-auto">
           <div
             className={`${fraunces.className} pt-10 sm:ml-6 -space-y-5 font-light text-foreground`}
           >
@@ -162,6 +163,21 @@ function About() {
                 FOCUSING ON QUALITY & IMPACT
               </div>
             </div>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none select-none mt-8 mx-auto sm:ml-6 xl:mt-0 xl:mx-0 xl:absolute xl:left-[268px] 2xl:left-[278px] xl:top-[235px] 2xl:top-[225px] w-[145px] sm:w-[155px] xl:w-[178px] 2xl:w-[205px] ${styles.skeletonCompanion}`}
+          >
+            <Image
+              src="/images/skeleton-suit.png"
+              alt=""
+              width={483}
+              height={920}
+              loading="eager"
+              sizes="(max-width: 640px) 145px, (max-width: 1280px) 155px, (max-width: 1536px) 178px, 205px"
+              className="w-full h-auto dark:drop-shadow-[0_0_2px_rgba(253,253,253,0.45)]"
+            />
           </div>
         </div>
 

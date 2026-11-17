@@ -5,6 +5,7 @@ import { fraunces } from "@/public/fonts/Fraunces";
 import LeftSideLabel from "../hero/LeftSideLabel";
 import RightSideLabel from "../hero/RightSideLabel";
 import ServiceCard from "./ServiceCard";
+import PeekingSkeleton from "./PeekingSkeleton";
 import styles from "./services.module.css";
 import { BsWindowPlus } from "react-icons/bs";
 import { MdOutlineRocketLaunch, MdOutlineWebStories } from "react-icons/md";
@@ -57,8 +58,8 @@ function Services() {
     if (checkImmediateVisibility()) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
+      const frame = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
@@ -120,6 +121,11 @@ function Services() {
               key={service.index}
               service={service}
               className={`${styles.cardItem} ${styles[`cardItem${idx + 1}`]}`}
+              topAccessory={
+                service.index === "02" ? (
+                  <PeekingSkeleton active={inView} />
+                ) : undefined
+              }
             />
           ))}
         </div>

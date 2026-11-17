@@ -1,21 +1,20 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const emptySubscribe = () => () => {};
+const getProductionSnapshot = () =>
+  window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1";
+const getServerSnapshot = () => false;
 
 export default function Analytics() {
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    // Only activate Google Analytics on production domain, avoiding localhost test traffic and audit overhead
-    if (
-      typeof window !== "undefined" &&
-      window.location.hostname !== "localhost" &&
-      window.location.hostname !== "127.0.0.1"
-    ) {
-      setEnabled(true);
-    }
-  }, []);
+  // Only activate Google Analytics on production domain, avoiding localhost test traffic and audit overhead
+  const enabled = useSyncExternalStore(
+    emptySubscribe,
+    getProductionSnapshot,
+    getServerSnapshot
+  );
 
   if (!enabled) return null;
 

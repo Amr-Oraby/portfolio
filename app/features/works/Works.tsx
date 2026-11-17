@@ -48,8 +48,8 @@ export default function Works() {
     if (checkImmediateVisibility()) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
+      const frame = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
@@ -105,7 +105,7 @@ export default function Works() {
 
             <div className="flex flex-col gap-6 max-w-[450px] lg:mb-4">
               <p className={`text-sm text-main-gray leading-relaxed ${styles.narrativeText}`}>
-                A curated collection of products I've architected and designed — from e-commerce frontends to interactive mathematical tools.
+                A curated collection of products I&apos;ve architected and designed — from e-commerce frontends to interactive mathematical tools.
               </p>
 
               <div className="flex items-center gap-4">
