@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { jetbrainsMono } from "@/public/fonts/JetBrains";
 import { fraunces } from "@/public/fonts/Fraunces";
@@ -14,24 +15,6 @@ export default function InitialLoader() {
     () => false
   );
 
-  const shouldSkip = useSyncExternalStore(
-    emptySubscribe,
-    () => {
-      try {
-        if (typeof window !== "undefined") {
-          if (window.location.search.includes("loader=true")) {
-            return false;
-          }
-          return sessionStorage.getItem("portfolio_visited") === "true";
-        }
-        return false;
-      } catch {
-        return false;
-      }
-    },
-    () => false
-  );
-
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [isDone, setIsDone] = useState(false);
@@ -39,7 +22,7 @@ export default function InitialLoader() {
 
   // Lock scroll while loader is active
   useEffect(() => {
-    if (shouldSkip || isDone) return;
+    if (isDone) return;
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -47,11 +30,11 @@ export default function InitialLoader() {
     return () => {
       document.body.style.overflow = originalOverflow;
     };
-  }, [shouldSkip, isDone]);
+  }, [isDone]);
 
   // Fast, punchy 2.0s loader progression
   useEffect(() => {
-    if (!mounted || shouldSkip || isDone) return;
+    if (!mounted || isDone) return;
 
     const DURATION = 1400; // 1.4s progression + 150ms hold + 450ms exit = 2.0s total
     const startTime = performance.now();
@@ -80,18 +63,11 @@ export default function InitialLoader() {
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [mounted, shouldSkip, isDone]);
+  }, [mounted, isDone]);
 
   const handleExitComplete = () => {
     if (hasFinishedRef.current) return;
     hasFinishedRef.current = true;
-
-    try {
-      sessionStorage.setItem("portfolio_visited", "true");
-      document.documentElement.classList.add("portfolio-visited");
-    } catch {
-      // Storage access fallback
-    }
 
     document.body.style.overflow = "";
     setIsDone(true);
@@ -104,8 +80,8 @@ export default function InitialLoader() {
     return "EXPERIENCE READY";
   };
 
-  // If already visited in session (after mount) or exit animation completed, render nothing
-  if (isDone || (mounted && shouldSkip)) {
+  // If exit animation completed, render nothing
+  if (isDone) {
     return null;
   }
 
@@ -166,12 +142,15 @@ export default function InitialLoader() {
               <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b border-l border-foreground/50" />
               <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b border-r border-foreground/50" />
 
-              <div className="w-14 h-14 sm:w-16 sm:h-16 border border-foreground/80 flex items-center justify-center bg-background/60 backdrop-blur-xs">
-                <span
-                  className={`${fraunces.className} text-2xl sm:text-3xl font-light text-foreground select-none`}
-                >
-                  A
-                </span>
+              <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1">
+                <Image
+                  src="/images/skull-logo.png"
+                  alt="Amr Oraby skull logo"
+                  width={72}
+                  height={72}
+                  loading="eager"
+                  className="w-full h-full object-contain select-none dark:drop-shadow-[0_0_1.5px_rgba(255,255,255,0.65)]"
+                />
               </div>
             </div>
 
