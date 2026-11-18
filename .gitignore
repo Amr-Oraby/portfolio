@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
 
 # next.js
 /.next/
@@ -45,4 +47,10 @@ next-env.d.ts
 *-report.json
 *-desktop*.json
 *-mobile*.json
+
+# media & frame generation artifacts
+public/*.mp4
+/frames/
+**/__pycache__/
+*.py[cod]
 

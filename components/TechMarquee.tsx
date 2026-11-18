@@ -1,4 +1,5 @@
 import React from "react";
+import RidingSkeleton from "@/components/animations/RidingSkeleton";
 import {
   SiHtml5,
   SiCss,
@@ -49,13 +50,20 @@ export default function TechMarquee() {
   );
 
   return (
-    <div aria-hidden="true" className="relative flex overflow-hidden bg-background border-y border-border py-6 sm:py-8 my-12">
-      <div className="animate-marquee whitespace-nowrap flex items-center">
-        {marqueeContent}
-        {marqueeContent}
-        {marqueeContent}
-        {marqueeContent}
+    <div
+      aria-hidden="true"
+      className="relative overflow-x-clip mt-24 sm:mt-28 md:mt-32 lg:mt-36 mb-12"
+    >
+      <div className="relative z-0 flex overflow-hidden bg-background border-y border-border py-6 sm:py-8">
+        <div className="animate-marquee whitespace-nowrap flex items-center">
+          {marqueeContent}
+          {marqueeContent}
+          {marqueeContent}
+          {marqueeContent}
+        </div>
       </div>
+
+      <RidingSkeleton />
     </div>
   );
 }
