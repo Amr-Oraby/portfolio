@@ -1,5 +1,6 @@
 import React from "react";
 import RidingSkeleton from "@/components/animations/RidingSkeleton";
+import MarqueeTrack from "@/components/animations/MarqueeTrack";
 import {
   SiHtml5,
   SiCss,
@@ -54,13 +55,13 @@ export default function TechMarquee() {
       aria-hidden="true"
       className="relative overflow-x-clip mt-32 sm:mt-40 md:mt-44 lg:mt-52 xl:mt-56 mb-12"
     >
-      <div className="relative z-0 flex overflow-hidden bg-background border-y border-border py-6 sm:py-8">
-        <div className="animate-marquee whitespace-nowrap flex items-center">
+      <div className="relative z-0 flex overflow-hidden [contain:layout_style_paint] bg-background border-y border-border py-6 sm:py-8">
+        <MarqueeTrack>
           {marqueeContent}
           {marqueeContent}
           {marqueeContent}
           {marqueeContent}
-        </div>
+        </MarqueeTrack>
       </div>
 
       <RidingSkeleton />

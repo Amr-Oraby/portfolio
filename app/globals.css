@@ -185,4 +185,33 @@
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
   }
+
+  /* GPU-composited cursor glow orb (130x130px translate3d, zero full-viewport repaint) */
+  @media (hover: none), (pointer: coarse) {
+    .fl-orb {
+      display: none !important;
+    }
+  }
+
+  .fl-orb {
+    mix-blend-mode: soft-light;
+    background: radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.18) 0%,
+      rgba(0, 0, 0, 0.08) 25px,
+      rgba(0, 0, 0, 0.015) 42px,
+      transparent 52px
+    );
+  }
+
+  .dark .fl-orb {
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.07) 30px,
+      rgba(255, 255, 255, 0.015) 50px,
+      transparent 65px
+    );
+  }
 }

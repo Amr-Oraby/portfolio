@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { fraunces } from "@/public/fonts/Fraunces";
+import MarqueeTrack from "@/components/animations/MarqueeTrack";
 
 export default function Marquee() {
   const renderItem = (key: number) => (
@@ -22,13 +23,13 @@ export default function Marquee() {
       aria-hidden="true"
       className="relative mt-24 sm:mt-32 md:mt-36 lg:mt-44 mb-12"
     >
-      <div className="relative z-0 flex overflow-hidden bg-background border-y border-border py-4 sm:py-6">
-        <div className="animate-marquee whitespace-nowrap flex items-center">
+      <div className="relative z-0 flex overflow-hidden [contain:layout_style_paint] bg-background border-y border-border py-4 sm:py-6">
+        <MarqueeTrack>
           {renderItem(1)}
           {renderItem(2)}
           {renderItem(3)}
           {renderItem(4)}
-        </div>
+        </MarqueeTrack>
       </div>
 
       {/* Sitting skeleton positioned on the marquee top border with legs dangling over the scrolling text */}

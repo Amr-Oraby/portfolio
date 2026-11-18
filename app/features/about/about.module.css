@@ -6,7 +6,6 @@
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.05s;
-  will-change: opacity, transform;
 }
 
 .lineMask {
@@ -22,7 +21,6 @@
   transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.12s;
-  will-change: opacity, transform;
 }
 
 .headingLine2 {
@@ -33,7 +31,6 @@
   transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.24s;
-  will-change: opacity, transform;
 }
 
 .hairline1 {
@@ -43,7 +40,6 @@
   transition: opacity 0.6s ease-out,
               transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.32s;
-  will-change: opacity, transform;
 }
 
 .manifestoText {
@@ -52,7 +48,6 @@
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.38s;
-  will-change: opacity, transform;
 }
 
 .focusTagline {
@@ -61,7 +56,6 @@
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.46s;
-  will-change: opacity, transform;
 }
 
 .skeletonCompanion {
@@ -70,7 +64,6 @@
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 0.52s;
-  will-change: opacity, transform;
 }
 
 .cardsGrid {
@@ -84,7 +77,6 @@
   transform-origin: top center;
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 /* Staggered Delays across the 6 cards */

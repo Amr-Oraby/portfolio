@@ -13,32 +13,9 @@ function Sections() {
     const targetId = href.replace(/.*#/, "");
     const elem = document.getElementById(targetId);
     if (!elem) return;
-    
-    const targetPosition = elem.getBoundingClientRect().top + window.scrollY;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-    const duration = 600; // 0.6 seconds
-    let start: number | null = null;
 
-    // Easing function for smooth acceleration and deceleration
-    const easeInOutCubic = (t: number) => 
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    const step = (timestamp: number) => {
-      if (!start) start = timestamp;
-      const progress = timestamp - start;
-      const percent = Math.min(progress / duration, 1);
-      
-      window.scrollTo(0, startPosition + distance * easeInOutCubic(percent));
-      
-      if (progress < duration) {
-        window.requestAnimationFrame(step);
-      } else {
-        window.history.pushState(null, "", href);
-      }
-    };
-    
-    window.requestAnimationFrame(step);
+    elem.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.pushState(null, "", href);
   };
 
   return (
