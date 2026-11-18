@@ -13,6 +13,25 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    const immutableAssetHeaders = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=31536000, immutable",
+      },
+    ];
+
+    return [
+      {
+        source: "/images/skeleton-riding-sheet.v1.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/skeleton-riding-poster.v1.webp",
+        headers: immutableAssetHeaders,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
