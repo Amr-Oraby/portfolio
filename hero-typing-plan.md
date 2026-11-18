@@ -1,17 +1,17 @@
 # Skeleton Typing Animation — Hero Feature Plan
 
-> **Status:** Planning only. Nothing has been implemented yet: no branch, no frames, no code changes. Waiting for approval.
+> **Status:** Approved & implementing on branch `feature/skeleton-hero-typing-animation` (branched from `main` after backflip merge `f8f1333`).
 > Source brief: [hero-animation-prompt.txt](hero-animation-prompt.txt)
 
 ---
 
-## 0. Open Decisions (Need Your Answer Before Implementation)
+## 0. Approved Decisions
 
-| # | Question | Recommendation |
+| # | Question | Approved Decision |
 |---|---|---|
-| D1 | **Which image gets replaced?** The Hero (`HeroContent.tsx`) shows `portrait.png`, which is a **human photo**, not a skeleton. The only static skeleton on the first screen is `skeleton-sitting.png` in `components/Marquee.tsx`, which sits on the marquee's top border right under the Hero. | Replace **`skeleton-sitting.png` in `Marquee.tsx`**, and keep `portrait.png` as is. |
-| D2 | **`prefers-reduced-motion`**: the riding and peeking skeletons keep moving even when reduced motion is on (that's the current repo convention). The web guidance says an infinite animation should respect the setting. | Show the static poster when `prefers-reduced-motion: reduce` is set (a small, deliberate break from the riding convention). |
-| D3 | **Git branch**: the current branch `feature/skeleton-backflip-loader` has uncommitted backflip work. | Commit the backflip work first, then create `feature/skeleton-hero-typing-animation` from it. |
+| D1 | **Which image gets replaced?** | Replace **`portrait.png` in `app/features/hero/HeroContent.tsx`**, keeping **`components/Marquee.tsx`** (`skeleton-sitting.png`) untouched. |
+| D2 | **`prefers-reduced-motion`** | Keep typing continuously on an infinite loop matching `RidingSkeleton` and `PeekingSkeleton` (static poster only for `saveData` or load failure). |
+| D3 | **Git branch** | Backflip work already merged to `main` (`f8f1333`); implementing on **`feature/skeleton-hero-typing-animation`**. |
 
 ---
 
@@ -92,14 +92,12 @@ Kept completely separate from the riding (`skeleton-riding-*.v1`) and backflip (
 
 ## 7. Hero Integration
 
-- `app/features/hero/**` stays **untouched**: `portrait.png`, the headline and `HeroCTA`.
-- `components/Marquee.tsx` stays a **Server Component**. Lines 34–45 (the `skeleton-sitting.png` `<Image>`) are replaced by `<TypingSkeleton />`.
+- **`app/features/hero/HeroContent.tsx`** keeps its outer layout, crop marks, `bg-foreground/5` frame (`w-[130px] h-[160px] sm:w-[200px] sm:h-[260px] md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px]`), `styles.imageEntrance`, and `Fig. 001` caption intact; `<Image src="/images/portrait.png" ... />` inside lines 26–36 is replaced by `<TypingSkeleton />`.
+- **`components/Marquee.tsx`** (`skeleton-sitting.png`) stays completely **untouched**.
+- `HeroContent.tsx` stays a **Server Component**.
 - The new leaf client component `components/animations/TypingSkeleton.tsx` (`"use client"`, `React.memo`, no callback props) contains:
-  - a poster `<Image unoptimized loading="eager">` underlay, with **no** `preload`/`fetchPriority`, because `portrait.png` stays the LCP image
-  - one `<canvas width=220 height=274>` with `aspect-[220/274] h-auto`
-- Keep the existing widths `w-[92px] sm:w-[116px] md:w-[132px] lg:w-[146px] xl:w-[160px]` and offsets `left-3 sm:left-8 md:left-12 lg:left-16`.
-- **Position change:** the old art had dangling legs (`-translate-y-[63.87%]`). The cross-legged pose has none, so it must sit **on** the border: `-translate-y-[calc(100%-2px)]` (fine-tuned to the cropped bottom edge).
-- `overflow-x-clip` goes on the Marquee outer wrapper. `overflow-hidden` stays only on the inner text track, so the upward protrusion and the `drop-shadow` are not clipped.
+  - a poster `<Image unoptimized loading="eager" decoding="async">` underlay (`w-full h-auto max-h-full object-contain`)
+  - one `<canvas width=220 height=274>` with `w-full h-auto max-h-full aspect-[220/274] object-contain` inside a `w-full h-full flex items-center justify-center` stage.
 
 ## 8. GSAP Implementation & Infinite Loop
 
@@ -135,18 +133,16 @@ tween = gsap.to(playhead, {
 
 ## 10. Responsive Behavior
 
-Height above the border = `width × 274/220`:
+Inside the existing `HeroContent.tsx` portrait frame (`aspect ~0.72–0.81` vs skeleton `220/274 = 0.803`):
 
-| Breakpoint | Width | Height | Old art height above border | Gap (Hero `pb-15` + Marquee `mt-*`) |
-|---|---|---|---|---|
-| < 640 | 92 | ~115 | ~88 | 60 + 96 = 156 |
-| sm | 116 | ~144 | ~110 | 60 + 128 = 188 |
-| md | 132 | ~164 | ~125 | 60 + 144 = 204 |
-| lg | 146 | ~182 | ~139 | 60 + 176 = 236 |
-| xl+ | 160 | ~199 | ~152 | 60 + 176 = 236 |
+| Breakpoint | Container Frame (W×H) | Rendered Skeleton (W×H) |
+|---|---|---|
+| `< 640px` | `130×160` | `~128×160` (`max-h-full` constrained) |
+| `sm (640+)` | `200×260` | `~200×249` (`w-full`) |
+| `md (768+)` | `230×300` | `~230×286` (`w-full`) |
+| `lg+ (1024+)` | `330×460` | `~330×411` (`w-full`) |
 
-> [!WARNING]
-> The new figure rises **~27–47 px higher** than the old one. The gap numbers come from Tailwind classes, not real measurements, so `HeroCTA` might be closer than they suggest. **Mitigation:** a Playwright test checks that the skeleton's box does not overlap the `HeroCTA` box at 320, 375, 768, 1024, 1280 and 1440 px. If it overlaps, shrink the width one step at that breakpoint (e.g. `xl:w-[150px]`) rather than redesigning anything.
+The skeleton fits cleanly inside the existing architectural crop-mark box at all breakpoints with zero layout changes or overlap.
 
 ## 11. Dark Mode Strategy
 
@@ -166,12 +162,12 @@ Height above the border = `width × 274/220`:
 | Canvas blits | ≤ 24/s |
 | CLS | < 0.01 |
 | Long tasks after load | 0 over 120 ms |
-| LCP | still `portrait.png` / headline (skeleton area ≤ ~32k px² vs portrait ≤ 151k px²) |
+| LCP | Hero headline / poster (`CLS = 0`, `lcp < 5000ms` verified in Playwright) |
 
 Runtime behavior:
 
 - Pauses when off-screen (`IntersectionObserver` with `threshold: 0`) and when the tab is hidden (`visibilitychange`).
-- With `saveData` (and reduced motion, if D2 is approved) it shows only the static poster.
+- With `saveData` it shows only the static poster; continues animating under `prefers-reduced-motion: reduce` (matching `RidingSkeleton` per D2).
 - Retry delays `[1000, 3000]` ms, plus a retry on the `online` event. If all retries fail, the poster stays (never a blank canvas).
 - Missing 2D context → poster.
 - `next.config.ts`: `Cache-Control: public, max-age=31536000, immutable` for both exact `.v1.webp` paths.
@@ -184,13 +180,13 @@ Runtime behavior:
 | `public/images/skeleton-hero-typing-sheet.v1.webp` | **New** asset |
 | `public/images/skeleton-hero-typing-poster.v1.webp` | **New** asset |
 | `components/animations/TypingSkeleton.tsx` | **New** client component |
-| `components/Marquee.tsx` | Swap the image for `<TypingSkeleton />`, new translate, `overflow-x-clip` |
+| `app/features/hero/HeroContent.tsx` | Swap `portrait.png` `<Image>` for `<TypingSkeleton />` inside existing frame |
 | `next.config.ts` | 2 immutable header entries |
 | `components/animations/__tests__/TypingSkeleton.test.tsx` | **New** Vitest |
 | `components/animations/__tests__/build-and-assets.test.ts` | Typing asset budgets and headers |
 | `e2e/typing-skeleton.spec.ts` | **New** Playwright spec |
 
-**Untouched:** `app/features/hero/**`, `app/layout.tsx`, `app/globals.css`, `InitialLoader.tsx`, `LoaderBackflipSkeleton.tsx`, `RidingSkeleton.tsx`, `PeekingSkeleton.tsx`, and the skill files. `skeleton-sitting.png` is kept unless you ask to delete it.
+**Untouched:** `components/Marquee.tsx`, `app/layout.tsx`, `app/globals.css`, `InitialLoader.tsx`, `LoaderBackflipSkeleton.tsx`, `RidingSkeleton.tsx`, `PeekingSkeleton.tsx`, and the skill files.
 
 ## 14. Implementation Steps & Subagent Ownership
 

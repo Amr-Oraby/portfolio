@@ -1,45 +1,35 @@
 import { fraunces } from "@/public/fonts/Fraunces";
-import Image from "next/image";
+import TypingSkeleton from "@/components/animations/TypingSkeleton";
 import styles from "./hero.module.css";
 
 function HeroContent() {
   return (
-    <div className=" p-3 flex justify-between sm:px-20 px-5  sm:pr-25 ">
+    <div className="p-3 px-5 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-4 sm:pl-20 sm:pr-10 lg:pr-16 xl:pr-20">
       {/* Headline */}
       <div
         className={`${fraunces.className} relative z-10 w-fit  m-0  font-serif text-[50px] sm:text-[80px] lg:text-[100px] xl:text-[130px] 2xl:text-[170px]  leading-[0.92] text-foreground tracking-[-0.03em]`}
       >
-        <div className={`pl-1 font-light ${styles.headlineLine1}`}>Building</div>
-        <div className={`italic -skew-x-6 pr-8 font-light ${styles.headlineLine2}`}>digital</div>
-        <div className={`relative inline-block font-light ${styles.headlineLine3}`}>experiences.</div>
+        <div className={`pl-1 font-light ${styles.headlineLine1}`}>
+          Building
+        </div>
+        <div
+          className={`italic -skew-x-6 pr-8 font-light ${styles.headlineLine2}`}
+        >
+          digital
+        </div>
+        <div
+          className={`relative inline-block font-light ${styles.headlineLine3}`}
+        >
+          experiences.
+        </div>
       </div>
 
-      {/* Portrait Section */}
-      <div className={`relative -left-20 z-1 p-2 sm:p-3 w-fit  md:left-0 sm:ml-0 2xl:pr-10 ${styles.imageEntrance}`}>
-        {/* Top Left Crop Mark */}
-        <div className="absolute -top-[0px] -left-[0px] w-[52px] h-[52px] border-t border-l border-main-gray/30"></div>
-
-        {/* Bottom Right Crop Mark */}
-        <div className="absolute -bottom-[0] right-[0] 2xl:right-6.5 w-[52px] h-[52px] border-b border-r border-main-gray/30"></div>
-
-        {/* Portrait Placeholder */}
-        <div className="bg-foreground/5 w-[130px] h-[160px] sm:w-[200px] sm:h-[260px] md:w-[230px] md:h-[300px] lg:w-[330px] lg:h-[460px] relative z-10">
-          <Image
-            src="/images/portrait.png"
-            fill
-            priority
-            fetchPriority="high"
-            sizes="(max-width: 640px) 130px, (max-width: 768px) 200px, (max-width: 1024px) 230px, 330px"
-            className="object-cover grayscale"
-            alt="Amr Oraby Portrait"
-          />
-        </div>
-
-        {/* Caption Row */}
-        <div className={`hidden sm:flex 2xl:pr-12 absolute bottom-[-20px] w-full pr-5 flex justify-between items-center text-[9px] tracking-[0.25em] text-main-gray uppercase mt-1 ${styles.decorativeFade}`}>
-          <span>Fig. 001</span>
-          <span className="w-3 h-px bg-main-gray/30"></span>
-          <span>Portrait</span>
+      {/* Hero Coding Skeleton */}
+      <div
+        className={`relative z-1 self-center md:self-auto shrink-0 w-fit 2xl:pr-6 ${styles.imageEntrance}`}
+      >
+        <div className="w-[210px] sm:w-[270px] md:w-[270px] lg:w-[370px] xl:w-[430px] 2xl:w-[470px] aspect-[220/274] relative z-10">
+          <TypingSkeleton />
         </div>
       </div>
     </div>

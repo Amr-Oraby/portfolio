@@ -45,6 +45,9 @@ test.describe("Performance, CWV & Production Build Health", () => {
     let backflipSheetStatus = 0;
     let backflipSheetContentLength = 0;
     let backflipSheetCacheControl = "";
+    let heroTypingSheetStatus = 0;
+    let heroTypingSheetContentLength = 0;
+    let heroTypingSheetCacheControl = "";
 
     page.on("response", (res) => {
       if (res.status() >= 400) {
@@ -58,6 +61,11 @@ test.describe("Performance, CWV & Production Build Health", () => {
         backflipSheetStatus = res.status();
         backflipSheetCacheControl = res.headers()["cache-control"] ?? "";
         backflipSheetContentLength = Number(res.headers()["content-length"] ?? 0);
+      }
+      if (res.url().includes("skeleton-hero-typing-sheet.v1.webp")) {
+        heroTypingSheetStatus = res.status();
+        heroTypingSheetCacheControl = res.headers()["cache-control"] ?? "";
+        heroTypingSheetContentLength = Number(res.headers()["content-length"] ?? 0);
       }
     });
     page.on("console", (msg) => {
@@ -94,6 +102,13 @@ test.describe("Performance, CWV & Production Build Health", () => {
     expect(backflipSheetCacheControl).toContain("immutable");
     expect(backflipSheetContentLength).toBeGreaterThan(0);
     expect(backflipSheetContentLength).toBeLessThanOrEqual(250 * 1024);
+
+    await expect
+      .poll(() => heroTypingSheetStatus, { timeout: 10_000 })
+      .toBe(200);
+    expect(heroTypingSheetCacheControl).toContain("immutable");
+    expect(heroTypingSheetContentLength).toBeGreaterThan(0);
+    expect(heroTypingSheetContentLength).toBeLessThanOrEqual(250 * 1024);
 
     expect(failedResponses).toEqual([]);
     expect(consoleErrors).toEqual([]);

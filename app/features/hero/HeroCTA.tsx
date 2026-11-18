@@ -19,7 +19,7 @@ export default function HeroCTA() {
       </div>
 
       {/* Right Content: Buttons */}
-      <div className="flex flex-row sm:flex-col  lg:flex-row items-start gap-4">
+      <div className="flex flex-row flex-wrap sm:flex-col  lg:flex-row items-start gap-4">
         <Link
           href="#works"
           className={cn(

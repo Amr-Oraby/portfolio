@@ -38,6 +38,14 @@ const nextConfig: NextConfig = {
         source: "/images/skeleton-backflip-poster.v2.webp",
         headers: immutableAssetHeaders,
       },
+      {
+        source: "/images/skeleton-hero-typing-sheet.v1.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/skeleton-hero-typing-poster.v1.webp",
+        headers: immutableAssetHeaders,
+      },
     ];
   },
 };
