@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import Analytics from "@/components/Analytics";
 import InitialLoader from "@/components/animations/InitialLoader";
 
+const INITIAL_LOADER_SEEN_SCRIPT = `try{if(sessionStorage.getItem("portfolio-initial-loader-seen")==="1"){document.documentElement.dataset.loaderSeen="1";}}catch{}`;
+
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
 export const metadata: Metadata = {
@@ -25,6 +27,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className="selection:bg-[#1b1a18] selection:text-white">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: INITIAL_LOADER_SEEN_SCRIPT,
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

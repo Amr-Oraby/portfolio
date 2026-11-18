@@ -1,12 +1,66 @@
 "use client";
 
-import { useEffect, useState, useRef, useSyncExternalStore } from "react";
-import Image from "next/image";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { jetbrainsMono } from "@/public/fonts/JetBrains";
 import { fraunces } from "@/public/fonts/Fraunces";
+import LoaderBackflipSkeleton from "@/components/animations/LoaderBackflipSkeleton";
+
+const BASE_DURATION_MS = 1400;
+const START_DEADLINE_MS = 600;
+const MAX_LOADER_MS = 2400;
+const HOLD_COMPLETE_MS = 150;
+const EXIT_FALLBACK_MS = 700;
+export const LOADER_SEEN_KEY = "portfolio-initial-loader-seen";
+
+const STATUS_INIT = "INITIALIZING ENVIRONMENT";
+const STATUS_CURATE = "CURATING DIGITAL WORKS";
+const STATUS_CALIBRATE = "CALIBRATING INTERACTION";
+const STATUS_READY = "EXPERIENCE READY";
+
+const INITIAL_TRACK_STYLE = {
+  transform: "scaleX(0)",
+  willChange: "transform",
+} as const;
 
 const emptySubscribe = () => () => {};
+
+function getLoaderSeenSnapshot(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return (
+      document.documentElement.dataset.loaderSeen === "1" ||
+      window.sessionStorage.getItem(LOADER_SEEN_KEY) === "1"
+    );
+  } catch {
+    return document.documentElement.dataset.loaderSeen === "1";
+  }
+}
+
+function getLoaderSeenServerSnapshot(): boolean {
+  return false;
+}
+
+function markLoaderSeenStorage(): void {
+  try {
+    window.sessionStorage.setItem(LOADER_SEEN_KEY, "1");
+  } catch {
+    // Ignore storage errors in restricted browsing contexts
+  }
+}
+
+function getStatusText(val: number): string {
+  if (val < 35) return STATUS_INIT;
+  if (val < 70) return STATUS_CURATE;
+  if (val < 100) return STATUS_CALIBRATE;
+  return STATUS_READY;
+}
 
 export default function InitialLoader() {
   const mounted = useSyncExternalStore(
@@ -14,15 +68,42 @@ export default function InitialLoader() {
     () => true,
     () => false
   );
+  const alreadySeen = useSyncExternalStore(
+    emptySubscribe,
+    getLoaderSeenSnapshot,
+    getLoaderSeenServerSnapshot
+  );
 
-  const [progress, setProgress] = useState(0);
+  const [statusText, setStatusText] = useState(STATUS_INIT);
   const [isExiting, setIsExiting] = useState(false);
   const [isDone, setIsDone] = useState(false);
+
+  const percentRef = useRef<HTMLSpanElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const hasFinishedRef = useRef(false);
+  const rampDoneRef = useRef(false);
+  const animDoneRef = useRef(false);
+  const completedRef = useRef(false);
+  const tryCompleteRef = useRef<(() => void) | null>(null);
+
+  const handleExitComplete = useCallback(() => {
+    if (hasFinishedRef.current) return;
+    hasFinishedRef.current = true;
+
+    markLoaderSeenStorage();
+    document.documentElement.dataset.loaderSeen = "1";
+    document.body.style.overflow = "";
+    setIsDone(true);
+  }, []);
+
+  const handleAnimFinished = useCallback(() => {
+    animDoneRef.current = true;
+    tryCompleteRef.current?.();
+  }, []);
 
   // Lock scroll while loader is active
   useEffect(() => {
-    if (isDone) return;
+    if (isDone || alreadySeen || getLoaderSeenSnapshot()) return;
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -30,58 +111,149 @@ export default function InitialLoader() {
     return () => {
       document.body.style.overflow = originalOverflow;
     };
-  }, [isDone]);
+  }, [isDone, alreadySeen]);
 
-  // Fast, punchy 2.0s loader progression
+  // Coordinated dual-gate loader progression (1.4s ramp + backflip completion, hard-capped at 2.4s)
   useEffect(() => {
-    if (!mounted || isDone) return;
+    if (!mounted || isDone || alreadySeen || getLoaderSeenSnapshot()) return;
 
-    const DURATION = 1400; // 1.4s progression + 150ms hold + 450ms exit = 2.0s total
+    let cancelled = false;
     const startTime = performance.now();
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    let maxTimer: number | null = null;
+    let holdTimer: number | null = null;
+    let exitFallbackTimer: number | null = null;
+    let lastStatus = STATUS_INIT;
+
+    const tryComplete = () => {
+      if (
+        cancelled ||
+        completedRef.current ||
+        !rampDoneRef.current ||
+        !animDoneRef.current
+      ) {
+        return;
+      }
+
+      completedRef.current = true;
+
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      }
+      if (maxTimer !== null) {
+        window.clearTimeout(maxTimer);
+        maxTimer = null;
+      }
+
+      if (percentRef.current) {
+        percentRef.current.textContent = "100%";
+      }
+      if (trackRef.current) {
+        trackRef.current.style.transform = "scaleX(1)";
+      }
+      if (lastStatus !== STATUS_READY) {
+        lastStatus = STATUS_READY;
+        setStatusText(STATUS_READY);
+      }
+
+      holdTimer = window.setTimeout(() => {
+        holdTimer = null;
+        if (cancelled) return;
+        setIsExiting(true);
+        exitFallbackTimer = window.setTimeout(() => {
+          exitFallbackTimer = null;
+          if (!cancelled) {
+            handleExitComplete();
+          }
+        }, EXIT_FALLBACK_MS);
+      }, HOLD_COMPLETE_MS);
+    };
+
+    tryCompleteRef.current = tryComplete;
+
+    if (rampDoneRef.current && animDoneRef.current) {
+      tryComplete();
+    }
 
     const tick = (now: number) => {
-      const elapsed = Math.max(0, now - startTime);
-      const fraction = Math.min(elapsed / DURATION, 1);
-      const current = Math.min(Math.floor(fraction * 100), 100);
+      if (cancelled || completedRef.current) return;
 
-      setProgress(current);
+      const elapsed = Math.max(0, now - startTime);
+      const fraction = Math.min(elapsed / BASE_DURATION_MS, 1);
 
       if (fraction < 1) {
+        const current = Math.min(Math.floor(fraction * 100), 99);
+        if (percentRef.current) {
+          percentRef.current.textContent = `${String(current).padStart(2, "0")}%`;
+        }
+        if (trackRef.current) {
+          trackRef.current.style.transform = `scaleX(${Math.min(fraction, 0.99)})`;
+        }
+        const nextStatus = getStatusText(current);
+        if (nextStatus !== lastStatus) {
+          lastStatus = nextStatus;
+          setStatusText(nextStatus);
+        }
         animationFrameId = requestAnimationFrame(tick);
       } else {
-        setProgress(100);
-        // Quick 150ms hold at 100%
-        setTimeout(() => {
-          setIsExiting(true);
-        }, 150);
+        animationFrameId = 0;
+        rampDoneRef.current = true;
+        tryComplete();
+
+        if (!completedRef.current) {
+          if (percentRef.current) {
+            percentRef.current.textContent = "99%";
+          }
+          if (trackRef.current) {
+            trackRef.current.style.transform = "scaleX(0.99)";
+          }
+          if (lastStatus !== STATUS_CALIBRATE) {
+            lastStatus = STATUS_CALIBRATE;
+            setStatusText(STATUS_CALIBRATE);
+          }
+        }
       }
     };
+
+    maxTimer = window.setTimeout(() => {
+      maxTimer = null;
+      if (cancelled || completedRef.current) return;
+      rampDoneRef.current = true;
+      animDoneRef.current = true;
+      tryComplete();
+    }, MAX_LOADER_MS);
 
     animationFrameId = requestAnimationFrame(tick);
 
     return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      cancelled = true;
+      tryCompleteRef.current = null;
+      if (completedRef.current && !hasFinishedRef.current) {
+        markLoaderSeenStorage();
+        document.documentElement.dataset.loaderSeen = "1";
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      }
+      if (maxTimer !== null) {
+        window.clearTimeout(maxTimer);
+        maxTimer = null;
+      }
+      if (holdTimer !== null) {
+        window.clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+      if (exitFallbackTimer !== null) {
+        window.clearTimeout(exitFallbackTimer);
+        exitFallbackTimer = null;
+      }
     };
-  }, [mounted, isDone]);
+  }, [mounted, isDone, alreadySeen, handleExitComplete]);
 
-  const handleExitComplete = () => {
-    if (hasFinishedRef.current) return;
-    hasFinishedRef.current = true;
-
-    document.body.style.overflow = "";
-    setIsDone(true);
-  };
-
-  const getStatusText = (val: number) => {
-    if (val < 35) return "INITIALIZING ENVIRONMENT";
-    if (val < 70) return "CURATING DIGITAL WORKS";
-    if (val < 100) return "CALIBRATING INTERACTION";
-    return "EXPERIENCE READY";
-  };
-
-  // If exit animation completed, render nothing
-  if (isDone) {
+  // If skipped on subsequent refreshes or exit animation completed, render nothing
+  if (isDone || alreadySeen) {
     return null;
   }
 
@@ -134,24 +306,12 @@ export default function InitialLoader() {
             exit={{ opacity: 0, y: -20, transition: { duration: 0.25, ease: "easeIn" } }}
             className="relative z-10 flex flex-col items-center text-center px-4 my-auto"
           >
-            {/* Monogram Box with Precision Framing */}
+            {/* Skeleton Stage */}
             <div className="relative mb-5 sm:mb-6">
-              {/* Corner crosshair accents */}
-              <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t border-l border-foreground/50" />
-              <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t border-r border-foreground/50" />
-              <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b border-l border-foreground/50" />
-              <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b border-r border-foreground/50" />
-
-              <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1">
-                <Image
-                  src="/images/skull-logo.png"
-                  alt="Amr Oraby skull logo"
-                  width={72}
-                  height={72}
-                  loading="eager"
-                  className="w-full h-full object-contain select-none dark:drop-shadow-[0_0_1.5px_rgba(255,255,255,0.65)]"
-                />
-              </div>
+              <LoaderBackflipSkeleton
+                onFinished={handleAnimFinished}
+                startDeadlineMs={START_DEADLINE_MS}
+              />
             </div>
 
             {/* Brand Name Title */}
@@ -178,19 +338,20 @@ export default function InitialLoader() {
                 className={`${jetbrainsMono.className} w-full flex justify-between items-center text-[10px] tracking-[0.2em] text-main-gray mb-2.5`}
               >
                 <span className="tabular-nums">SYS.01</span>
-                <span className="tabular-nums font-semibold text-foreground">
-                  {String(progress).padStart(2, "0")}%
+                <span
+                  ref={percentRef}
+                  className="tabular-nums font-semibold text-foreground"
+                >
+                  00%
                 </span>
               </div>
 
               {/* Hairline Track with GPU scaleX */}
               <div className="w-full h-px bg-foreground/15 relative overflow-hidden">
                 <div
+                  ref={trackRef}
                   className="absolute inset-0 bg-foreground origin-left"
-                  style={{
-                    transform: `scaleX(${progress / 100})`,
-                    willChange: "transform",
-                  }}
+                  style={INITIAL_TRACK_STYLE}
                 />
               </div>
 
@@ -198,7 +359,7 @@ export default function InitialLoader() {
               <div
                 className={`${jetbrainsMono.className} mt-3 text-[9px] sm:text-[10px] tracking-[0.25em] text-main-gray uppercase h-4 flex items-center justify-center`}
               >
-                <span>{getStatusText(progress)}</span>
+                <span>{statusText}</span>
               </div>
             </div>
           </motion.div>

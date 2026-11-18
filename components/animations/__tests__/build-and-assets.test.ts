@@ -32,6 +32,32 @@ describe("Build config & static animation assets", () => {
     expect(posterBytes).toBeLessThanOrEqual(60 * 1024);
   });
 
+  it("keeps backflip sprite sheet and fallback poster within size budgets", () => {
+    const sheetPath = path.join(
+      ROOT,
+      "public",
+      "images",
+      "skeleton-backflip-sheet.v2.webp"
+    );
+    const posterPath = path.join(
+      ROOT,
+      "public",
+      "images",
+      "skeleton-backflip-poster.v2.webp"
+    );
+
+    expect(fs.existsSync(sheetPath)).toBe(true);
+    expect(fs.existsSync(posterPath)).toBe(true);
+
+    const sheetBytes = fs.statSync(sheetPath).size;
+    const posterBytes = fs.statSync(posterPath).size;
+
+    expect(sheetBytes).toBeGreaterThan(0);
+    expect(sheetBytes).toBeLessThanOrEqual(250 * 1024);
+    expect(posterBytes).toBeGreaterThan(0);
+    expect(posterBytes).toBeLessThanOrEqual(25 * 1024);
+  });
+
   it("contains no unused starter SVGs or orphaned image assets in public/", () => {
     const removedAssets = [
       "public/file.svg",
@@ -59,6 +85,8 @@ describe("Build config & static animation assets", () => {
     for (const target of [
       "/images/skeleton-riding-sheet.v1.webp",
       "/images/skeleton-riding-poster.v1.webp",
+      "/images/skeleton-backflip-sheet.v2.webp",
+      "/images/skeleton-backflip-poster.v2.webp",
     ]) {
       const rule = headerRules.find((r) => r.source === target);
       expect(rule, `Missing headers rule for ${target}`).toBeDefined();

@@ -1,0 +1,589 @@
+# Skeleton Typing Animation — Hero Feature Planning
+
+We want to replace the current static skeleton image in the Hero section with a smooth, infinitely looping typing animation using the video we created of our skeleton typing on a laptop.
+
+The video is approximately **3 seconds long**. We want to extract it into image frames with transparent backgrounds and use those frames to create an animation inside the existing Hero component.
+
+We already have a skill named **`skeleton-animation-skill`** that contains the workflow and technical standards for our skeleton animations. Read it thoroughly and follow it as the primary reference.
+
+**This task is planning and investigation ONLY. Do not implement anything yet.**
+
+---
+
+## 1. Feature Goal
+
+Replace the current static skeleton image in the Hero section with an animated version of the same skeleton typing on its laptop.
+
+The final animation should:
+
+- Look like the skeleton is actively typing on the keyboard.
+- Have continuous, natural finger and hand movement.
+- Loop infinitely without a noticeable visual jump.
+- Preserve the exact appearance and identity of our existing skeleton.
+- Work perfectly with the existing Hero layout.
+- Be responsive across desktop, tablet, and mobile.
+- Support both light mode and dark mode.
+- Be optimized for performance and minimal impact on initial page loading.
+
+The animation should feel alive, subtle, and polished—not like a slideshow of disconnected images.
+
+---
+
+## 2. Git & Branch Isolation
+
+Before investigating, inspect:
+
+- Current Git branch.
+- Git status.
+- Existing uncommitted changes.
+- Existing feature branches and naming conventions.
+
+Create a separate branch for this feature only after the planning phase is approved.
+
+Suggested branch name:
+
+`feature/skeleton-hero-typing-animation`
+
+Never overwrite, discard, stash, or modify existing user work.
+
+Do not create the branch or make any changes during this planning phase.
+
+---
+
+## 3. Mandatory Skill — `skeleton-animation-skill`
+
+Find and read the complete `skeleton-animation-skill`.
+
+It defines our established animation pipeline and should be reused rather than reinvented.
+
+Investigate its recommendations and existing tools for:
+
+- Video analysis.
+- Frame extraction.
+- FPS selection.
+- Frame sampling.
+- Background removal.
+- Alpha transparency.
+- Image cleanup.
+- Frame alignment.
+- Image dimensions.
+- Animation implementation.
+- Asset optimization.
+- Naming conventions.
+- Performance.
+- Previous skeleton animation implementations.
+
+Also inspect the previous skeleton riding animation feature to learn from its actual implementation, scripts, extraction workflow, and optimization decisions.
+
+Reuse existing scripts, utilities, and proven approaches whenever appropriate.
+
+Do not create a new pipeline without a clear reason.
+
+---
+
+## 4. Source Video Investigation
+
+Locate the typing animation video that was created for the skeleton.
+
+Investigate the video itself rather than making assumptions based on its filename.
+
+Determine:
+
+- Exact file path.
+- File format.
+- Duration.
+- Resolution.
+- Original FPS.
+- Frame count.
+- Whether the video contains unnecessary beginning or ending frames.
+- Whether the skeleton moves position between frames.
+- Whether the laptop remains consistent.
+- Whether the hands and fingers actually animate naturally.
+- Whether the animation can be looped seamlessly.
+- Whether the first and last frames are compatible for looping.
+
+The source video is approximately 3 seconds long.
+
+Analyze whether the entire 3-second video should be used or whether trimming the sequence would produce a better loop.
+
+The goal is an infinite typing animation that feels continuous and natural.
+
+---
+
+## 5. Frame Extraction — Critical Requirements
+
+Use the established workflow from `skeleton-animation-skill` and FFmpeg where appropriate.
+
+Extract the video into sequential image frames.
+
+The extraction must be precise and visually clean.
+
+### Every frame must:
+
+- Contain ONLY the skeleton, laptop, and elements that belong to the character.
+- Have a genuinely transparent background.
+- Preserve the skeleton's original black outlines.
+- Preserve the keyboard, laptop, hands, and fingers.
+- Avoid damaging thin bone details.
+- Have consistent dimensions.
+- Maintain consistent character scale.
+- Preserve alignment between frames.
+- Avoid unwanted movement or jitter caused by inconsistent cropping.
+- Avoid white halos or background remnants.
+- Avoid ghosting or leftover pixels from the original background.
+- Avoid clipping any part of the skeleton or laptop.
+
+### Background removal is especially important.
+
+Do not simply convert the background to black, white, or another color.
+
+The final images must support transparency and work on both light and dark backgrounds.
+
+Investigate the most reliable way to remove the video background without destroying:
+
+- Thin black outlines.
+- Finger details.
+- Small gaps between bones.
+- Laptop edges.
+- Keyboard details.
+- Any anti-aliased pixels around the skeleton.
+
+If the source background makes clean extraction difficult, identify the appropriate solution before implementation rather than accepting low-quality frames.
+
+Visually inspect representative frames, including frames where hands overlap the laptop or the skeleton's outlines are difficult to separate from the background.
+
+---
+
+## 6. Frame Count & Smoothness
+
+Do not arbitrarily choose a small number of frames.
+
+Analyze the original video and the skill's recommended approach to determine the optimal extraction rate.
+
+The goal is to preserve the natural typing movement, especially the movement of:
+
+- Fingers.
+- Hands.
+- Wrists.
+- Arms.
+- Upper body, if animated.
+
+Avoid:
+
+- Noticeable jumps between frames.
+- Duplicate frames that do not add smoothness.
+- Excessive frame count that unnecessarily increases asset size.
+- Interpolation that introduces distorted hands or bones.
+
+If frame interpolation is needed, investigate its quality and whether it is actually beneficial for this particular video.
+
+Determine the best balance between:
+
+- Smooth animation.
+- Image quality.
+- Frame count.
+- Total asset size.
+- Browser performance.
+
+---
+
+## 7. Asset Structure & Naming
+
+Follow the directory and naming conventions defined by the skill and previous skeleton animation.
+
+Keep the new typing animation assets completely separate from the riding and backflip animations.
+
+Plan a dedicated directory for the typing animation frames.
+
+For example, if consistent with the existing architecture:
+
+`frames/frame-1.webp`  
+`frames/frame-2.webp`  
+`frames/frame-3.webp`  
+`...`
+
+Do not finalize the structure until you inspect the existing conventions.
+
+All frames must be:
+
+- Sequentially numbered.
+- Consistent in dimensions.
+- Properly cropped.
+- Transparent.
+- Optimized.
+- Easy to load in a predictable sequence.
+
+Investigate whether PNG, WebP, or another format is best for preserving transparency and line quality while minimizing asset size.
+
+---
+
+## 8. Hero Integration
+
+Inspect the existing Hero component and its complete layout before planning the integration.
+
+We want to replace the current skeleton image with the animation while preserving the existing design.
+
+Do not redesign the Hero section.
+
+Determine:
+
+- Where the current skeleton image is rendered.
+- How its dimensions are controlled.
+- How it behaves responsively.
+- Whether the image is positioned, contained, or cropped.
+- Whether any existing animations affect it.
+- Whether the Hero already uses GSAP or another animation library.
+- How dark mode currently works in the project.
+
+The animated skeleton must occupy the exact same visual area as the current image unless a small adjustment is necessary to improve the animation.
+
+Preserve the existing layout, spacing, typography, and composition.
+
+---
+
+## 9. Animation Implementation
+
+Use **GSAP** for the animation if it is consistent with the existing architecture and the skill.
+
+Investigate the most efficient way to display the sequential frames.
+
+The implementation should:
+
+- Render the correct frame sequence.
+- Play continuously.
+- Loop infinitely.
+- Maintain a consistent frame rate.
+- Avoid noticeable flickering.
+- Avoid unnecessary React rerenders on every frame.
+- Avoid creating excessive DOM elements.
+- Avoid restarting the animation due to unrelated component updates.
+- Properly clean up animation instances.
+- Avoid conflicts with other Hero animations.
+- Work correctly with React lifecycle and Strict Mode, if enabled.
+
+### Typing behavior
+
+The skeleton should look like it is continuously typing.
+
+Evaluate the best loop strategy:
+
+- Loop the extracted sequence seamlessly.
+- If the first and last frames do not match, determine how to create a natural loop.
+- If necessary, use a carefully designed transition or loop sequence that avoids a visible reset.
+- Do not create an awkward pause at the end of each loop.
+- Avoid a robotic or repetitive visual reset.
+
+The animation must continue indefinitely while the Hero is visible.
+
+---
+
+## 10. Responsive Behavior
+
+Investigate the existing responsive Hero behavior and plan how the animation should behave across screen sizes.
+
+Verify the planned implementation for:
+
+- Large desktop screens.
+- Normal desktop screens.
+- Tablets.
+- Mobile phones.
+- Narrow mobile screens.
+
+The skeleton must:
+
+- Maintain its correct aspect ratio.
+- Remain properly positioned within the Hero.
+- Never be clipped unintentionally.
+- Never overflow the viewport.
+- Avoid covering important Hero content.
+- Scale naturally without distortion.
+- Preserve the visual balance of the layout.
+
+Do not add unnecessary breakpoint complexity if the current Hero already provides the required responsive behavior.
+
+---
+
+## 11. Dark Mode
+
+The animation must work correctly in both light and dark modes.
+
+Since the frames have transparent backgrounds, investigate how the skeleton will appear against the existing light and dark Hero backgrounds.
+
+Verify:
+
+- The black outlines remain visible in light mode.
+- The white bone interiors remain visible in dark mode.
+- The skeleton does not disappear against dark backgrounds.
+- The laptop remains readable.
+- No white rectangular background appears around the frames.
+- No background-removal artifacts become more visible when switching themes.
+
+If the existing character colors are unsuitable for dark mode, investigate the simplest solution that preserves the character's original design without introducing unnecessary image processing or duplicate frame sets.
+
+Do not modify the project's theme system unnecessarily.
+
+---
+
+## 12. Performance & Loading Optimization
+
+Performance is a high priority because the animation appears inside the initial Hero section.
+
+Investigate:
+
+- Total frame count.
+- Total asset size.
+- Individual frame sizes.
+- Image decoding cost.
+- Memory usage.
+- Browser caching.
+- Preloading strategy.
+- Whether all frames should be loaded immediately.
+- Whether frames should be loaded progressively.
+- Whether the animation should start only after enough frames are ready.
+- Whether the animation could affect LCP or initial rendering.
+- Mobile memory and CPU usage.
+- Low-end device performance.
+
+Avoid loading hundreds of large images unnecessarily.
+
+Determine whether the best approach is:
+
+- Preloading all frames.
+- Preloading a small initial batch and loading the rest progressively.
+- Buffering frames ahead of playback.
+- Using a different rendering strategy if it provides significantly better performance.
+
+The skeleton should not delay the rest of the Hero content or website from rendering.
+
+Avoid unnecessary libraries and dependencies.
+
+---
+
+## 13. Parallel Investigation Using Subagents
+
+Use subagents for each independent investigation task to allow parallel work.
+
+All subagents must remain in planning mode and must not modify the project.
+
+### Subagent 1 — Animation Skill & Video Specialist
+
+Investigate:
+
+- The complete `skeleton-animation-skill`.
+- The typing video.
+- The riding animation pipeline.
+- The optimal FFmpeg extraction strategy.
+- Frame count and FPS.
+- Background removal.
+- Alpha transparency.
+- Image cleanup.
+- Frame alignment.
+- Seamless looping.
+
+Return concrete technical recommendations and expected output characteristics.
+
+### Subagent 2 — Frontend & GSAP Specialist
+
+Inspect:
+
+- The existing Hero component.
+- Current static skeleton image implementation.
+- Existing GSAP usage.
+- React lifecycle.
+- Animation cleanup.
+- Responsive layout.
+- Dark mode.
+
+Recommend the cleanest integration with minimal architectural changes.
+
+### Subagent 3 — Performance Specialist
+
+Independently investigate:
+
+- Frame asset optimization.
+- Image format.
+- Preloading.
+- Buffering.
+- Memory consumption.
+- Image decoding.
+- Mobile performance.
+- Avoiding unnecessary React rerenders.
+- Initial page loading impact.
+
+Provide a concrete performance strategy with tradeoffs.
+
+---
+
+## 14. Adversarial Plan Review
+
+Once all subagents complete their investigations, consolidate their findings into a preliminary implementation plan.
+
+Then assign another subagent to challenge the plan aggressively.
+
+Do not ask it to simply approve or validate the proposal.
+
+It must actively look for flaws, including:
+
+- Poor background removal.
+- Transparent frames containing unwanted pixels.
+- Black outlines being accidentally removed.
+- White halos around the character.
+- Inconsistent frame dimensions.
+- Character jitter between frames.
+- Cropped limbs or laptop edges.
+- Low frame rate.
+- Unnecessary interpolation.
+- Poor loop transitions.
+- Visible animation resets.
+- Repetitive or robotic typing motion.
+- Excessive asset size.
+- Memory problems.
+- Too much preloading.
+- Slow initial Hero rendering.
+- React rerenders causing animation restarts.
+- GSAP lifecycle or cleanup issues.
+- Dark mode contrast problems.
+- Mobile overflow or clipping.
+- Responsive scaling issues.
+- Unnecessary complexity.
+- Conflicts with the existing skeleton animation pipeline.
+
+The reviewer must provide specific objections, explain why each issue matters, and propose fixes.
+
+Revise the preliminary plan accordingly.
+
+Resolve disagreements between subagents before producing the final plan. Do not ignore a valid criticism simply because the initial plan seems reasonable.
+
+---
+
+## 15. Implementation Plan Structure
+
+After all investigations and adversarial review, present a detailed final plan containing:
+
+1. Skill findings.
+2. Source video analysis.
+3. Exact video path.
+4. Duration, FPS, resolution, and relevant characteristics.
+5. Looping strategy.
+6. Background-removal method.
+7. Frame extraction strategy.
+8. Recommended FPS.
+9. Expected frame count.
+10. Output format.
+11. Frame directory structure.
+12. Frame cleanup and alignment process.
+13. Asset optimization.
+14. Hero integration approach.
+15. GSAP implementation strategy.
+16. Infinite looping behavior.
+17. Responsive behavior.
+18. Dark mode strategy.
+19. Preloading/buffering strategy.
+20. Performance safeguards.
+21. Proposed Git branch.
+22. Exact files expected to change.
+23. Exact assets expected to be generated.
+24. Implementation steps and task dependencies.
+25. How subagents will be used during implementation.
+26. Adversarial review findings.
+27. Risks and mitigation.
+28. Testing and verification checklist.
+
+Keep the implementation focused entirely on this feature.
+
+Do not refactor unrelated components, redesign the Hero, or change the existing animation infrastructure without a demonstrated need.
+
+---
+
+## 16. Implementation Workflow After Approval
+
+The final plan should also outline how the actual implementation will be executed after I approve it.
+
+Use subagents again during implementation, where appropriate, for independent tasks such as:
+
+- Frame extraction and visual QA.
+- Asset optimization analysis.
+- Hero integration review.
+- Performance verification.
+
+However, avoid multiple agents modifying the same files simultaneously.
+
+Clearly define which agent owns which task, and coordinate dependencies before merging their work.
+
+---
+
+## 17. Testing & Acceptance Criteria
+
+The plan must include a verification checklist to ensure:
+
+### Frames & Visual Quality
+
+- [ ] Correct video used.
+- [ ] Complete typing sequence captured.
+- [ ] Frame order is correct.
+- [ ] Smooth hand and finger motion.
+- [ ] Genuine alpha transparency.
+- [ ] No background remains.
+- [ ] No white halos or artifacts.
+- [ ] Skeleton outlines are preserved.
+- [ ] Laptop and keyboard details are preserved.
+- [ ] No body parts are clipped.
+- [ ] Consistent framing and dimensions.
+
+### Animation
+
+- [ ] Plays smoothly.
+- [ ] Infinite loop works.
+- [ ] Loop transition is not noticeable.
+- [ ] No flickering.
+- [ ] No unnecessary pause between loops.
+- [ ] Animation does not restart during unrelated React updates.
+- [ ] GSAP cleanup is correct.
+
+### UI
+
+- [ ] Correct Hero placement.
+- [ ] Static image replaced without redesigning the Hero.
+- [ ] Responsive on desktop, tablet, and mobile.
+- [ ] No overflow or clipping.
+- [ ] Light mode looks correct.
+- [ ] Dark mode looks correct.
+
+### Performance
+
+- [ ] Asset sizes are reasonable.
+- [ ] No unnecessary frame loading.
+- [ ] No excessive memory consumption.
+- [ ] No unnecessary CPU usage.
+- [ ] No meaningful initial loading regression.
+- [ ] Works on mobile.
+- [ ] Production build passes.
+
+### Regression
+
+- [ ] Existing riding animation remains unaffected.
+- [ ] Existing backflip animation remains unaffected.
+- [ ] Existing Hero functionality remains unaffected.
+- [ ] No unrelated files or architecture changed.
+
+---
+
+## 18. Approval Gate — Do Not Implement Yet
+
+This task is strictly for planning.
+
+**Do not:**
+
+- Create the branch yet.
+- Extract video frames.
+- Generate assets.
+- Install dependencies.
+- Write code.
+- Modify the Hero.
+- Modify the animation skill.
+- Change existing animations.
+- Start implementation.
+
+Investigate everything, use the subagents in parallel, perform the adversarial review, revise the plan, and then present me with the final detailed plan.
+
+Wait for my explicit approval before executing any implementation step.

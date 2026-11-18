@@ -30,6 +30,14 @@ const nextConfig: NextConfig = {
         source: "/images/skeleton-riding-poster.v1.webp",
         headers: immutableAssetHeaders,
       },
+      {
+        source: "/images/skeleton-backflip-sheet.v2.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/skeleton-backflip-poster.v2.webp",
+        headers: immutableAssetHeaders,
+      },
     ];
   },
 };

@@ -134,6 +134,10 @@
     scroll-behavior: smooth;
   }
 
+  html[data-loader-seen="1"] #initial-loader-overlay {
+    display: none !important;
+  }
+
   /* Custom Scrollbar Styling */
   * {
     scrollbar-width: thin;

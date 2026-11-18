@@ -42,6 +42,9 @@ test.describe("Performance, CWV & Production Build Health", () => {
     const pageErrors: string[] = [];
     let sheetContentLength = 0;
     let sheetCacheControl = "";
+    let backflipSheetStatus = 0;
+    let backflipSheetContentLength = 0;
+    let backflipSheetCacheControl = "";
 
     page.on("response", (res) => {
       if (res.status() >= 400) {
@@ -50,6 +53,11 @@ test.describe("Performance, CWV & Production Build Health", () => {
       if (res.url().includes("skeleton-riding-sheet.v1.webp")) {
         sheetCacheControl = res.headers()["cache-control"] ?? "";
         sheetContentLength = Number(res.headers()["content-length"] ?? 0);
+      }
+      if (res.url().includes("skeleton-backflip-sheet.v2.webp")) {
+        backflipSheetStatus = res.status();
+        backflipSheetCacheControl = res.headers()["cache-control"] ?? "";
+        backflipSheetContentLength = Number(res.headers()["content-length"] ?? 0);
       }
     });
     page.on("console", (msg) => {
@@ -79,6 +87,13 @@ test.describe("Performance, CWV & Production Build Health", () => {
       .toContain("immutable");
     expect(sheetContentLength).toBeGreaterThan(0);
     expect(sheetContentLength).toBeLessThanOrEqual(350 * 1024);
+
+    await expect
+      .poll(() => backflipSheetStatus, { timeout: 10_000 })
+      .toBe(200);
+    expect(backflipSheetCacheControl).toContain("immutable");
+    expect(backflipSheetContentLength).toBeGreaterThan(0);
+    expect(backflipSheetContentLength).toBeLessThanOrEqual(250 * 1024);
 
     expect(failedResponses).toEqual([]);
     expect(consoleErrors).toEqual([]);

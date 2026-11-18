@@ -1,0 +1,242 @@
+
+We want to implement a backflip animation for our existing skeleton character and integrate it into the website's initial loading screen.
+
+The source video is located inside the `public` folder and is named `backflip`.
+
+We already have a skill named `skeleton-animation-skill` that contains our established workflow and technical guidelines for creating skeleton animations. **Read and follow this skill carefully. Do not reinvent its workflow.**
+
+This task is planning only. Do not write code, modify files, generate frames, install dependencies, or start implementation yet.
+
+## 1. Goal
+
+When a user opens the website:
+
+1. The existing loading screen appears.
+2. Our skeleton appears and performs a complete backflip.
+3. The backflip animation plays smoothly with enough frames to preserve fluid motion.
+4. After the animation finishes, the loading screen disappears and the website opens normally.
+
+The animation must feel clean, smooth, lightweight, and consistent with our existing skeleton character.
+
+---
+
+## 2. Git Safety
+
+Before investigating:
+
+- Inspect the current Git branch and Git status.
+- Check for uncommitted changes.
+- Never overwrite, discard, stash, or modify existing user work.
+- Keep this feature isolated in its own branch.
+
+Proposed branch:
+
+`feature/skeleton-backflip-loader`
+
+Do not create the branch during the planning phase. Branch creation and implementation will happen only after approval.
+
+---
+
+## 3. Mandatory Skill
+
+Locate and read the complete `skeleton-animation-skill`.
+
+Use it as the primary reference for:
+
+- Video processing.
+- Frame extraction.
+- Background removal.
+- Frame cleanup.
+- Frame alignment.
+- Animation generation.
+- Asset optimization.
+- Naming conventions.
+- Existing scripts and tooling.
+
+Investigate the previous skeleton riding animation and reuse its proven workflow where appropriate.
+
+Do not modify the skill or unnecessarily duplicate existing tools.
+
+---
+
+## 4. Source Video Analysis
+
+Inspect the actual `backflip` video inside `public`.
+
+Determine:
+
+- Exact file path and extension.
+- Resolution.
+- Duration.
+- Original FPS.
+- Background characteristics.
+- The number of frames required to represent the complete backflip.
+- Whether the video contains idle frames or unnecessary footage at the beginning or end.
+- The exact backflip sequence: starting pose, takeoff, rotation, landing, and ending pose.
+
+Do not blindly extract the entire video if it contains irrelevant frames.
+
+Identify the actual animation sequence and preserve the complete backflip.
+
+---
+
+## 5. Background Removal & Visual Cleanup — Critical
+
+The source video contains unwanted visual elements that must NOT appear in the final animation.
+
+Specifically, it contains:
+
+- Curved rotation/motion lines around the skeleton, used to illustrate the backflip.
+- A black oval/black surface beneath the skeleton.
+
+**Both elements must be completely removed from every generated frame.**
+
+The final frames must contain ONLY the skeleton itself.
+
+### Strict visual requirements:
+
+- Remove all rotation lines and motion graphics.
+- Remove the black oval/platform/shadow beneath the skeleton.
+- Remove the original background completely.
+- Output must have a genuinely transparent background (alpha), not a white background.
+- Preserve the skeleton's black outlines and bone details.
+- Do not accidentally erase parts of the skeleton that overlap the unwanted elements.
+- Avoid residual pixels, ghosting, black smudges, shadows, or artifacts from the removed elements.
+- Ensure the skeleton is not clipped at any point during the backflip.
+- Keep the character's proportions consistent across all frames.
+- Maintain consistent positioning and framing to prevent unwanted shaking during playback.
+
+Inspect the frames visually throughout the sequence, especially frames where the skeleton overlaps the rotation lines or black surface, since these areas may require additional cleanup.
+
+Do not accept a background-removal method merely because it removes the white background. The rotation lines and black oval must also be explicitly handled.
+
+---
+
+## 6. Frame Generation — Prioritize Smoothness
+
+Create enough frames to make the backflip animation look genuinely smooth.
+
+Do not unnecessarily limit the frame count to a low number or reduce the animation quality just to simplify processing.
+
+### Requirements:
+
+- Analyze the original motion and choose an appropriate frame rate based on the motion and final playback requirements.
+- Prefer a sufficiently high frame rate for smooth rotation and limb movement.
+- If the original video FPS is too low, investigate whether additional frames can be generated using a suitable interpolation technique.
+- Avoid blindly increasing FPS by duplicating frames; duplicated frames do not make movement smoother.
+- Use the skill's recommended extraction/interpolation workflow.
+- Ensure the transition between frames is visually continuous.
+- Avoid abrupt jumps in skull, ribcage, arms, legs, and feet.
+- Preserve the full movement, including the takeoff and landing.
+- Use sequential frame numbering with consistent dimensions.
+
+The final animation should look smooth even when the skeleton is rotating quickly during the backflip.
+
+Before deciding the final FPS and frame count, compare visual quality, file size, and browser playback performance.
+
+---
+
+## 7. Frame Organization
+
+Follow the existing skill's naming conventions and project architecture.
+
+If the skill specifies a frame folder structure, use it.
+
+Otherwise, plan a dedicated asset structure for the backflip frames without mixing them with the existing bicycle-riding animation.
+
+Ensure:
+
+- Frames are sequentially numbered.
+- Every frame has the same canvas dimensions.
+- Transparent padding is consistent.
+- The skeleton stays properly framed throughout the animation.
+- The entire skeleton remains visible.
+- No unwanted motion graphics or background elements remain.
+
+---
+
+## 8. Loading Screen Integration
+
+Investigate the existing loading page and integrate the animation into it without redesigning or refactoring the loading system unnecessarily.
+
+### Expected behavior:
+
+- Display the skeleton during the existing loading experience.
+- Play the backflip animation once.
+- Do not make the backflip loop indefinitely.
+- Avoid restarting the animation due to React rerenders.
+- After the animation finishes, allow the loading screen to transition away and show the website normally.
+- If the website is ready before the animation finishes, avoid an unnecessary prolonged loading experience.
+- If the animation assets fail to load, the website must still open normally.
+- The loading page must never become stuck because of the animation.
+- Preserve existing loading behavior and application initialization logic.
+
+Determine how the current loader manages readiness, transitions, errors, and dismissal before deciding how the animation should be integrated.
+
+---
+
+## 9. Animation Implementation
+
+Investigate the best rendering method using the existing skill and project architecture.
+
+Use the established animation pipeline rather than introducing unnecessary new dependencies.
+
+If GSAP is already used and appropriate, use it for animation timing and coordination.
+
+The implementation must:
+
+- Play the frame sequence smoothly.
+- Preserve the skeleton's aspect ratio.
+- Avoid layout shifts.
+- Avoid excessive DOM elements.
+- Avoid duplicate animation instances.
+- Properly clean up animation on unmount.
+- Handle React lifecycle correctly.
+- Avoid conflicts with the existing skeleton riding animation.
+- Remain performant on mobile devices.
+
+Do not add a new animation framework unless there is a strong technical reason.
+
+---
+
+## 10. Performndin
+ecuai p r nwbanxeina a roi.i:Totf ut
+o seieamug. ensreel reholb dermto g
+ erprsdno uigoudb eopritrae- n-eh nda hi ncrya frpreshanimiu nac n ce hrnkia stss.Dnouydat  cs ahta
+ tm  vteakpt, ris
+ -# eItoUuatmtpetrefnpdegtAunsmapnn/vgt dnytepo
+ Sbgt1—ml& e pc
+ Redh pe`s-asl`l oc`vdoece ki ne neigtainnoto emnarusaey lcgtern otlnn  ko/lt.-E qie Snutsz,n y
+ an n eSeit ncte a
+ esadidsh-It h ntoitoclipa 
+ - etermn  oduas fe inettaGSP nifeyese# l-etala-ldgan. godn eoidonmoy fl zsdmbi havio vatwhrtesacutsrai.-n piooui ohes.nsoodgieas
+ - alvetr uag isca trintlmnrp
+
+ hnsinhsogsien  n
+ Dons slvdts
+ Maetrfrsnsti,pca
+  Rainlnuibcgo v lpam.- ketaaet uigp-tnonafin t
+  -Ecesv rcut
+  oibtenrsAanjt-Esz-o. eading  e i-ingfce
+  Rc nins iniw sRc ee rstgan ceanue.iefraescsrctrl
+  -ohigirvemtice bensecmcto
+  the ane nh io e e eigh ipoa-#PlnRqim
+  titaa e,ncmep lnti:nsromisil
+  .See.aaseBckrondrmvlpa
+  5 xlcvfrinnsakovptomFe itplnsa omeS
+  8 p..poytcte
+  1 somzora1Ltato.nycle
+  4 dshr..ebr
+  1em aedrtac..Eaile 9att r..pmt reravrarwr in
+  23 nmiaostgiKe the ncutif o etrue rsew. 4e
+  Tefa tndercatta h eblnce
+   bi rcFr rtakgonnsra.oinlierm
+   obvla.copxsrmn
+   hnodm.e r lpemnst.  pamhlTenis .hodricc-T i ot es.stfucot blcewb.N ceraei.-A ens-fomeisgimd
+   Potl as
+   -
+   15Aei snig any
+   D O:Cauhet rt ce n ak
+   Eteeasiyel  n  iao
+   ugs mnteari resersnefnlmlanoryxi pv
+   bnfvinlpnنفذ الكلام ال ف prompt.txtنفذ الكلام ال ف prompt.txt
