@@ -424,6 +424,7 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(0);
+      await Promise.resolve();
     });
 
     expect(screen.getByTestId("loader-backflip-canvas")).toBeInTheDocument();
@@ -704,6 +705,7 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(0);
+      await Promise.resolve();
     });
 
     expect(document.getElementById("initial-loader-overlay")).toBeNull();

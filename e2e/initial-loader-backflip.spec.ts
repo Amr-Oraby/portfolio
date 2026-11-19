@@ -7,6 +7,28 @@ interface BackflipSampleResult {
 }
 
 test.describe("InitialLoader Backflip Skeleton E2E", () => {
+  test("skips the loader after the first load even when refreshed during exit", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+
+    await expect(page.locator("#initial-loader-overlay")).toBeVisible({
+      timeout: 5_000,
+    });
+
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          window.sessionStorage.getItem("portfolio-initial-loader-seen")
+        )
+      )
+      .toBe("1");
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.locator("#initial-loader-overlay")).toHaveCount(0);
+  });
+
   test("renders overlay and canvas, receives HTTP 200 immutable sheet, and animates pixels during backflip", async ({
     page,
   }) => {
