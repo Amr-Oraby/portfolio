@@ -295,12 +295,8 @@ test.describe("InitialLoader Backflip Skeleton E2E", () => {
     );
 
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.locator("#initial-loader-overlay")).toBeVisible({
-      timeout: 5_000,
-    });
-    await expect(page.getByTestId("loader-backflip-stage")).toBeVisible({
-      timeout: 5_000,
-    });
+    await expect(page.locator("#initial-loader-overlay")).toHaveCount(0);
+    await expect(page.getByTestId("loader-backflip-stage")).toHaveCount(0);
     await page.waitForTimeout(300);
 
     const reloadedOverflowState = await page.evaluate(() => ({
@@ -310,15 +306,10 @@ test.describe("InitialLoader Backflip Skeleton E2E", () => {
       seenFlag: window.sessionStorage.getItem("portfolio-initial-loader-seen"),
     }));
     expect(reloadedOverflowState.seenFlag).toBe("1");
-    expect(reloadedOverflowState.bodyOverflow).toBe("hidden");
+    expect(reloadedOverflowState.bodyOverflow).not.toBe("hidden");
     expect(reloadedOverflowState.scrollWidth).toBeLessThanOrEqual(
       reloadedOverflowState.innerWidth
     );
-
-    await page.locator("#initial-loader-overlay").waitFor({
-      state: "detached",
-      timeout: 5_000,
-    });
 
     await themeToggle.click();
     await expect
