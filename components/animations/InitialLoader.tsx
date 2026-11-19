@@ -42,7 +42,7 @@ function getLoaderSeenSnapshot(): boolean {
 }
 
 function getLoaderSeenServerSnapshot(): boolean {
-  return false;
+  return true;
 }
 
 function markLoaderSeenStorage(): void {
@@ -101,7 +101,7 @@ export default function InitialLoader() {
 
   // Lock scroll while loader is active
   useEffect(() => {
-    if (isDone || alreadySeen || getLoaderSeenSnapshot()) return;
+    if (isDone || alreadySeen) return;
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -113,7 +113,7 @@ export default function InitialLoader() {
 
   // Coordinated dual-gate loader progression (1.4s ramp + backflip completion, hard-capped at 2.4s)
   useEffect(() => {
-    if (!mounted || isDone || alreadySeen || getLoaderSeenSnapshot()) return;
+    if (!mounted || isDone || alreadySeen) return;
 
     let cancelled = false;
     const startTime = performance.now();
@@ -251,7 +251,11 @@ export default function InitialLoader() {
   }, [mounted, isDone, alreadySeen, handleExitComplete]);
 
   // If skipped on subsequent refreshes or exit animation completed, render nothing
-  if (isDone || alreadySeen) {
+  if (
+    !mounted ||
+    isDone ||
+    alreadySeen
+  ) {
     return null;
   }
 
