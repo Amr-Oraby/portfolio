@@ -31,7 +31,14 @@ const INITIAL_TRACK_STYLE = {
 const emptySubscribe = () => () => {};
 
 function getLoaderSeenSnapshot(): boolean {
-  return false;
+  try {
+    return (
+      window.sessionStorage.getItem(LOADER_SEEN_KEY) === "1" ||
+      document.documentElement.dataset.loaderSeen === "1"
+    );
+  } catch {
+    return document.documentElement.dataset.loaderSeen === "1";
+  }
 }
 
 function getLoaderSeenServerSnapshot(): boolean {
