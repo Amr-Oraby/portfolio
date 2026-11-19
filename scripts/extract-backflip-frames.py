@@ -544,6 +544,8 @@ def main() -> int:
     frames_dir = repo_root / "frames" / "backflip"
     sheet_path = repo_root / "public" / "images" / "skeleton-backflip-sheet.v2.webp"
     poster_path = repo_root / "public" / "images" / "skeleton-backflip-poster.v2.webp"
+    mobile_sheet_path = repo_root / "public" / "images" / "skeleton-backflip-sheet-mobile.v3.webp"
+    mobile_poster_path = repo_root / "public" / "images" / "skeleton-backflip-poster-mobile.v3.webp"
 
     if not video_path.exists():
         print(f"Missing source video: {video_path}", file=sys.stderr)
@@ -568,6 +570,19 @@ def main() -> int:
     )
     assert pack_stats["cols"] == COLS and pack_stats["rows"] == ROWS, f"Grid mismatch: {pack_stats}"
     assert pack_stats["sheet"] == f"{SHEET_W}x{SHEET_H}", f"Sheet dim mismatch: {pack_stats}"
+
+    mobile_scaled, mobile_cw, mobile_ch = core.pad_and_scale(rgba_roi, 120, 136)
+    assert (mobile_cw, mobile_ch) == (120, 136)
+    mobile_pack_stats = core.pack_and_encode_webp(
+        mobile_scaled,
+        GUTTER,
+        mobile_sheet_path,
+        mobile_poster_path,
+        is_monochrome=True,
+        allow_4096=False,
+        benchmark_webp=False,
+    )
+    assert mobile_pack_stats["sheet"] == "1280x1296"
 
     # Verify zero alpha in all 4px gutters on the actual decoded WebP
     raw_dec = core.run_ffmpeg(["-i", str(sheet_path), "-f", "rawvideo", "-pix_fmt", "rgba", "pipe:1"])

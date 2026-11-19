@@ -39,6 +39,14 @@ const nextConfig: NextConfig = {
         headers: immutableAssetHeaders,
       },
       {
+        source: "/images/skeleton-backflip-sheet-mobile.v3.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/skeleton-backflip-poster-mobile.v3.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
         source: "/images/skeleton-hero-typing-sheet.v1.webp",
         headers: immutableAssetHeaders,
       },
