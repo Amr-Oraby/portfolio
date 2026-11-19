@@ -768,6 +768,27 @@ describe("RidingSkeleton & TechMarquee", () => {
     expect(outerWrapper?.contains(lane)).toBe(true);
   });
 
+  it("animates the rider left-to-right when direction is right", async () => {
+    render(<RidingSkeleton direction="right" />);
+    emitIntersection(true);
+
+    await waitFor(() => {
+      expect(
+        decodedSrcs.some((src) => src.includes("skeleton-riding-sheet"))
+      ).toBe(true);
+    });
+
+    await waitFor(() => {
+      expect(findHorizontalTweenCall()).toBeDefined();
+    });
+
+    const horizontalCall = findHorizontalTweenCall();
+    expect(Number(horizontalCall?.fromVars.x)).toBeLessThan(0);
+    expect(Number(horizontalCall?.toVars.x)).toBeGreaterThan(0);
+    expect(Number(horizontalCall?.fromVars.scaleX)).toBe(-1);
+    expect(Number(horizontalCall?.toVars.scaleX)).toBe(-1);
+  });
+
   it("continues animating canvas and running GSAP horizontal loop even when prefers-reduced-motion is reduce", async () => {
     window.matchMedia = createMatchMediaMock(true);
 

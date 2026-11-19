@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Hero TypingSkeleton E2E", () => {
-  test("renders typing canvas in Hero portrait slot after loader, receives HTTP 200 immutable sheet, and leaves portrait/sitting skeleton untouched", async ({
+  test("renders typing canvas in Hero portrait slot after loader, receives HTTP 200 immutable sheet, and removes the legacy sitting skeleton", async ({
     page,
   }) => {
     const consoleErrors: string[] = [];
@@ -78,9 +78,9 @@ test.describe("Hero TypingSkeleton E2E", () => {
       )
       .toBe("none");
 
-    // Existing Marquee sitting skeleton intact; portrait, figure caption, and borders removed
+    // Legacy sitting skeleton is removed; portrait, figure caption, and borders remain removed
     const sittingImg = page.locator('img[src*="skeleton-sitting.png"]');
-    await expect(sittingImg).toHaveCount(1);
+    await expect(sittingImg).toHaveCount(0);
     await expect(page.locator("text=Fig. 001")).toHaveCount(0);
     await expect(page.locator("text=Portrait")).toHaveCount(0);
     expect(legacyPortraitRequests).toEqual([]);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { fraunces } from "@/public/fonts/Fraunces";
 import LeftSideLabel from "../hero/LeftSideLabel";
 import RightSideLabel from "../hero/RightSideLabel";
@@ -165,20 +164,6 @@ function About() {
             </div>
           </div>
 
-          <div
-            aria-hidden="true"
-            className={`pointer-events-none select-none mt-8 mx-auto sm:ml-6 xl:mt-0 xl:mx-0 xl:absolute xl:left-[268px] 2xl:left-[278px] xl:top-[235px] 2xl:top-[225px] w-[145px] sm:w-[155px] xl:w-[178px] 2xl:w-[205px] ${styles.skeletonCompanion}`}
-          >
-            <Image
-              src="/images/skeleton-suit.png"
-              alt=""
-              width={483}
-              height={920}
-              loading="eager"
-              sizes="(max-width: 640px) 145px, (max-width: 1280px) 155px, (max-width: 1536px) 178px, 205px"
-              className="w-full h-auto dark:drop-shadow-[0_0_2px_rgba(253,253,253,0.45)]"
-            />
-          </div>
         </div>
 
         <div className={`accordion grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 flex-1 w-full ${styles.cardsGrid}`}>

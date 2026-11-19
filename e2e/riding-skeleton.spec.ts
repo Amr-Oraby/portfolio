@@ -22,7 +22,7 @@ async function waitForPageReadyAndScrollToLane(page: Page) {
     { timeout: 15_000 }
   );
 
-  const lane = page.getByTestId("riding-skeleton-lane");
+  const lane = page.locator('[data-testid="riding-skeleton-lane"][data-riding-direction="left"]');
   await lane.waitFor({ state: "attached", timeout: 15_000 });
   await lane.evaluate((el) => {
     el.scrollIntoView({ behavior: "instant", block: "center" });
@@ -63,7 +63,7 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
 
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const lane = await waitForPageReadyAndScrollToLane(page);
-    const canvas = page.getByTestId("riding-skeleton-canvas");
+    const canvas = page.locator('[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]');
 
     await expect(lane).toBeVisible();
     await expect(canvas).toBeVisible();
@@ -130,14 +130,14 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await waitForPageReadyAndScrollToLane(page);
 
-    const canvas = page.getByTestId("riding-skeleton-canvas");
+    const canvas = page.locator('[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]');
     await expect(canvas).toBeVisible();
 
     // Wait until GSAP has attached an active transform to the canvas
     await page.waitForFunction(
       () => {
         const el = document.querySelector<HTMLElement>(
-          '[data-testid="riding-skeleton-canvas"]'
+          '[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]'
         );
         if (!el) return false;
         const transform = getComputedStyle(el).transform;
@@ -150,7 +150,7 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
     const result = await page.evaluate<MotionResult>(() => {
       return new Promise((resolve, reject) => {
         const el = document.querySelector<HTMLElement>(
-          '[data-testid="riding-skeleton-canvas"]'
+          '[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]'
         );
         if (!el) {
           reject(new Error("Missing riding-skeleton-canvas"));
@@ -269,7 +269,7 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
     await page.waitForFunction(
       () => {
         const canvas = document.querySelector<HTMLCanvasElement>(
-          '[data-testid="riding-skeleton-canvas"]'
+          '[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]'
         );
         if (!canvas || canvas.width === 0 || canvas.height === 0) {
           return false;
@@ -290,7 +290,7 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
     for (let sampleIdx = 0; sampleIdx < 4; sampleIdx++) {
       const count = await page.evaluate(() => {
         const canvas = document.querySelector<HTMLCanvasElement>(
-          '[data-testid="riding-skeleton-canvas"]'
+          '[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]'
         );
         if (!canvas) return 0;
         const ctx = canvas.getContext("2d");
@@ -362,8 +362,8 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
       )
       .toBe(!wasDarkInitially);
 
-    await expect(page.getByTestId("riding-skeleton-lane")).toBeVisible();
-    await expect(page.getByTestId("riding-skeleton-canvas")).toBeVisible();
+    await expect(page.locator('[data-testid="riding-skeleton-lane"][data-riding-direction="left"]')).toBeVisible();
+    await expect(page.locator('[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]')).toBeVisible();
 
     const darkOverflow = await page.evaluate(() => ({
       scrollWidth: document.documentElement.scrollWidth,
@@ -390,7 +390,7 @@ test.describe("RidingSkeleton & TechMarquee E2E", () => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await waitForPageReadyAndScrollToLane(page);
 
-    const canvas = page.getByTestId("riding-skeleton-canvas");
+    const canvas = page.locator('[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]');
     await expect(canvas).toBeVisible();
     await expect(page.getByTestId("riding-skeleton-poster")).toHaveCount(0);
 

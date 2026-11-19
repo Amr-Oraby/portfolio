@@ -55,6 +55,7 @@ function getStaticPreferenceServerSnapshot(): boolean {
 
 export interface RidingSkeletonProps {
   className?: string;
+  direction?: "left" | "right";
 }
 
 /**
@@ -62,7 +63,10 @@ export interface RidingSkeletonProps {
  * Lazily decodes a 28-frame WebP sprite sheet after the initial loader dismisses
  * and synchronizes pedal cadence to horizontal GSAP travel distance.
  */
-export default function RidingSkeleton({ className }: RidingSkeletonProps) {
+export default function RidingSkeleton({
+  className,
+  direction = "left",
+}: RidingSkeletonProps) {
   const laneRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -185,7 +189,11 @@ export default function RidingSkeleton({ className }: RidingSkeletonProps) {
         const totalDistance = trackWidth + riderWidth;
         const duration = totalDistance / speedPxPerSec;
 
-        gsap.set(canvas, { x: trackWidth });
+        const startX = direction === "left" ? trackWidth : -riderWidth;
+        const endX = direction === "left" ? -riderWidth : trackWidth;
+        const facingScale = direction === "left" ? 1 : -1;
+
+        gsap.set(canvas, { x: startX, scaleX: facingScale });
 
         let isRestoring = initialProgress > 0;
         prevProgress = initialProgress;
@@ -195,9 +203,10 @@ export default function RidingSkeleton({ className }: RidingSkeletonProps) {
         let nextTween: gsap.core.Tween | null = null;
         nextTween = gsap.fromTo(
           canvas,
-          { x: trackWidth },
+          { x: startX, scaleX: facingScale },
           {
-            x: -riderWidth,
+            x: endX,
+            scaleX: facingScale,
             duration,
             ease: "none",
             repeat: -1,
@@ -419,32 +428,38 @@ export default function RidingSkeleton({ className }: RidingSkeletonProps) {
       fallbackCleanup = null;
       syncPlaybackRef = null;
     };
-  }, [showStaticPoster]);
+  }, [showStaticPoster, direction]);
 
   return (
     <div
       ref={laneRef}
       data-testid="riding-skeleton-lane"
+      data-riding-direction={direction}
       aria-hidden="true"
       className={cn(
-        "pointer-events-none select-none absolute top-0 inset-x-0 z-20 -translate-y-[calc(100%-2px)]",
+        "pointer-events-none select-none absolute top-0 inset-x-0 z-20 overflow-x-clip -translate-y-[calc(100%-2px)]",
         className
       )}
     >
       {showStaticPoster ? (
         <Image
           data-testid="riding-skeleton-poster"
+          data-riding-direction={direction}
           src={POSTER_SRC}
           alt=""
           width={CELL_WIDTH}
           height={CELL_HEIGHT}
           unoptimized
-          className="ml-4 sm:ml-10 block w-[76px] sm:w-[88px] md:w-[98px] lg:w-[108px] h-auto dark:drop-shadow-[0_0_1.5px_rgba(255,255,255,0.65)]"
+          className={cn(
+            "ml-4 sm:ml-10 block w-[76px] sm:w-[88px] md:w-[98px] lg:w-[108px] h-auto dark:drop-shadow-[0_0_1.5px_rgba(255,255,255,0.65)]",
+            direction === "right" && "scale-x-[-1]"
+          )}
         />
       ) : (
         <canvas
           ref={canvasRef}
           data-testid="riding-skeleton-canvas"
+          data-riding-direction={direction}
           aria-hidden="true"
           width={CELL_WIDTH}
           height={CELL_HEIGHT}
