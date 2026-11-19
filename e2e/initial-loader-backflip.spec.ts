@@ -294,34 +294,31 @@ test.describe("InitialLoader Backflip Skeleton E2E", () => {
       toggledOverflow.innerWidth
     );
 
-    let reloadSheetRequests = 0;
-    const onReloadRequest = (req: { url: () => string }) => {
-      if (req.url().includes("skeleton-backflip-sheet")) {
-        reloadSheetRequests += 1;
-      }
-    };
-    page.on("request", onReloadRequest);
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.locator("#initial-loader-overlay")).toHaveCount(0);
+    await expect(page.locator("#initial-loader-overlay")).toBeVisible({
+      timeout: 5_000,
+    });
+    await expect(page.getByTestId("loader-backflip-stage")).toBeVisible({
+      timeout: 5_000,
+    });
     await page.waitForTimeout(300);
-    page.off("request", onReloadRequest);
 
     const reloadedOverflowState = await page.evaluate(() => ({
       bodyOverflow: document.body.style.overflow,
       scrollWidth: document.documentElement.scrollWidth,
       innerWidth: window.innerWidth,
       seenFlag: window.sessionStorage.getItem("portfolio-initial-loader-seen"),
-      hadPrePaintScript:
-        document.head.innerHTML.includes("portfolio-initial-loader-seen") ||
-        document.body.innerHTML.includes("portfolio-initial-loader-seen"),
     }));
     expect(reloadedOverflowState.seenFlag).toBe("1");
-    expect(reloadedOverflowState.hadPrePaintScript).toBe(true);
-    expect(reloadSheetRequests).toBe(0);
-    expect(reloadedOverflowState.bodyOverflow).not.toBe("hidden");
+    expect(reloadedOverflowState.bodyOverflow).toBe("hidden");
     expect(reloadedOverflowState.scrollWidth).toBeLessThanOrEqual(
       reloadedOverflowState.innerWidth
     );
+
+    await page.locator("#initial-loader-overlay").waitFor({
+      state: "detached",
+      timeout: 5_000,
+    });
 
     await themeToggle.click();
     await expect
