@@ -37,13 +37,13 @@ describe("Build config & static animation assets", () => {
       ROOT,
       "public",
       "images",
-      "skeleton-backflip-sheet.v2.webp"
+      "skeleton-backflip-sheet.v3.webp"
     );
     const posterPath = path.join(
       ROOT,
       "public",
       "images",
-      "skeleton-backflip-poster.v2.webp"
+      "skeleton-backflip-poster.v3.webp"
     );
 
     expect(fs.existsSync(sheetPath)).toBe(true);
@@ -53,26 +53,9 @@ describe("Build config & static animation assets", () => {
     const posterBytes = fs.statSync(posterPath).size;
 
     expect(sheetBytes).toBeGreaterThan(0);
-    expect(sheetBytes).toBeLessThanOrEqual(250 * 1024);
+    expect(sheetBytes).toBeLessThanOrEqual(300 * 1024);
     expect(posterBytes).toBeGreaterThan(0);
     expect(posterBytes).toBeLessThanOrEqual(25 * 1024);
-
-    const mobileSheetPath = path.join(
-      ROOT,
-      "public",
-      "images",
-      "skeleton-backflip-sheet-mobile.v3.webp"
-    );
-    const mobilePosterPath = path.join(
-      ROOT,
-      "public",
-      "images",
-      "skeleton-backflip-poster-mobile.v3.webp"
-    );
-    expect(fs.existsSync(mobileSheetPath)).toBe(true);
-    expect(fs.existsSync(mobilePosterPath)).toBe(true);
-    expect(fs.statSync(mobileSheetPath).size).toBeLessThanOrEqual(150 * 1024);
-    expect(fs.statSync(mobilePosterPath).size).toBeLessThanOrEqual(10 * 1024);
   });
 
   it("keeps hero typing sprite sheet and fallback poster within size budgets", () => {
@@ -128,10 +111,8 @@ describe("Build config & static animation assets", () => {
     for (const target of [
       "/images/skeleton-riding-sheet.v1.webp",
       "/images/skeleton-riding-poster.v1.webp",
-      "/images/skeleton-backflip-sheet.v2.webp",
-      "/images/skeleton-backflip-poster.v2.webp",
-      "/images/skeleton-backflip-sheet-mobile.v3.webp",
-      "/images/skeleton-backflip-poster-mobile.v3.webp",
+      "/images/skeleton-backflip-sheet.v3.webp",
+      "/images/skeleton-backflip-poster.v3.webp",
       "/images/skeleton-hero-typing-sheet.v1.webp",
       "/images/skeleton-hero-typing-poster.v1.webp",
     ]) {

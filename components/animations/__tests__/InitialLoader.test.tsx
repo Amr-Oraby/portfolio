@@ -189,9 +189,9 @@ const CELL_HEIGHT = 204;
 const GUTTER = 4;
 const STRIDE_X = 188;
 const STRIDE_Y = 212;
-const SHEET_WIDTH = 1880;
-const SHEET_HEIGHT = 1908;
-const BACKFLIP_SHEET_SRC = "skeleton-backflip-sheet.v2.webp";
+const SHEET_WIDTH = 1504;
+const SHEET_HEIGHT = 1272;
+const BACKFLIP_SHEET_SRC = "skeleton-backflip-sheet.v3.webp";
 
 function makeDomRect(width: number, height: number): DOMRect {
   return {
@@ -460,7 +460,7 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
     expect(gsapMockState.gsapMock.to).toHaveBeenCalledTimes(1);
   });
 
-  it("clamps frame index to 87 when playhead.frame reaches 88 on completion and dismisses cleanly", async () => {
+  it("clamps frame index to 47 when playhead.frame reaches 48 on completion and dismisses cleanly", async () => {
     render(<InitialLoader />);
 
     await act(async () => {
@@ -480,13 +480,13 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
           : (Object.keys(playhead).find(
               (key) => typeof playhead[key] === "number"
             ) ?? "frame");
-      playhead[frameKey] = 88;
+      playhead[frameKey] = 48;
       (tweenCall!.vars.onUpdate as (() => void) | undefined)?.();
       (tweenCall!.vars.onComplete as (() => void) | undefined)?.();
     });
 
     const expectedSx = 7 * STRIDE_X + GUTTER; // col 7 -> 1320
-    const expectedSy = 8 * STRIDE_Y + GUTTER; // row 8 -> 1700
+    const expectedSy = 5 * STRIDE_Y + GUTTER; // row 5 -> 1064
 
     const clampedDraw = mockCanvasCtx.drawImage.mock.calls.find(
       (args) =>
@@ -497,9 +497,9 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
     );
     expect(clampedDraw).toBeDefined();
 
-    // Never draws out-of-range cell 88 (col 8, row 8)
+    // Never draws out-of-range frame 48 (col 8, row 6)
     const outOfRangeDraw = mockCanvasCtx.drawImage.mock.calls.find(
-      (args) => args[1] === 8 * STRIDE_X + GUTTER && args[2] === expectedSy
+      (args) => args[1] === 8 * STRIDE_X + GUTTER
     );
     expect(outOfRangeDraw).toBeUndefined();
 

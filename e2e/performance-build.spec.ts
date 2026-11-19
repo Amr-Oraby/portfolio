@@ -57,7 +57,7 @@ test.describe("Performance, CWV & Production Build Health", () => {
         sheetCacheControl = res.headers()["cache-control"] ?? "";
         sheetContentLength = Number(res.headers()["content-length"] ?? 0);
       }
-      if (res.url().includes("skeleton-backflip-sheet.v2.webp")) {
+      if (res.url().includes("skeleton-backflip-sheet.v3.webp")) {
         backflipSheetStatus = res.status();
         backflipSheetCacheControl = res.headers()["cache-control"] ?? "";
         backflipSheetContentLength = Number(res.headers()["content-length"] ?? 0);
