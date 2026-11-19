@@ -31,15 +31,7 @@ const INITIAL_TRACK_STYLE = {
 const emptySubscribe = () => () => {};
 
 function getLoaderSeenSnapshot(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    return (
-      document.documentElement.dataset.loaderSeen === "1" ||
-      window.sessionStorage.getItem(LOADER_SEEN_KEY) === "1"
-    );
-  } catch {
-    return document.documentElement.dataset.loaderSeen === "1";
-  }
+  return false;
 }
 
 function getLoaderSeenServerSnapshot(): boolean {

@@ -1,5 +1,75 @@
 # Implementation Plan: Skeleton Backflip Animation for `InitialLoader`
 
+## Refresh-Behavior and Performance Audit (November 2026)
+
+### Audit findings
+
+1. **Session-only suppression is currently the wrong test default**
+   - `InitialLoader` reads `sessionStorage` and hides itself after the first completed load.
+   - The pre-paint script and `html[data-loader-seen="1"] #initial-loader-overlay` CSS prevent hydration and repeat refresh playback.
+   - The refresh test and unit test assert the opposite behavior. These gates must be removed for testing.
+
+2. **Primary asset cost is measurable but the sheet is close to budget**
+   - Source: `public/backflip.mp4`, 91 frames, 24 fps, H264, 3.7917 s, 3.11 MiB.
+   - Active range: frames 0-87, 88 native frames.
+   - Runtime sheet: 249,330 bytes; poster: 10,178 bytes.
+   - The sheet is versioned and immutable-cached, but it still has to be decoded on every first loader playback.
+
+3. **The largest weak-device risk is canvas decode plus GSAP setup, not React state**
+   - Loading creates a new `HTMLImageElement`, async-decodes a 1880x1782 WebP, allocates an 180x204 canvas, and starts GSAP immediately.
+   - Drawing a 88-frame animation with `clearRect` and `drawImage` is correct for a one-shot, but `imageSmoothingQuality = "high"` can add scaling work on low-end GPUs/CPUs.
+   - The 600 ms start deadline and 2400 ms hard ceiling protect against hangs, but also need real hardware measurement.
+
+4. **The progress loop is already DOM-ref optimized**
+   - `00%`-`99%` text and `scaleX` are driven by refs inside rAF, avoiding one React render per frame.
+   - Status text changes only four times.
+   - Remaining rAF work is small, but the full canvas, image decode, GSAP timer, and exit CSS all compete on weak devices.
+
+5. **Lifecycle cleanup is important**
+   - The component sets scroll overflow to hidden and restores it.
+   - It cancels rAF/timers, aborts image loading, reverts GSAP, removes visibility listeners, and clears canvas backing store.
+   - Cleanup should be retained exactly when switching from session-only behavior back to refresh behavior.
+
+### Detailed fix plan
+
+1. **Make refresh playback unconditional for testing**
+   - Remove session-storage and document-dataset loader suppression from `InitialLoader`.
+   - Remove the pre-paint loader-seen script from `app/layout.tsx`.
+   - Remove loader-seen CSS hiding and remove loader-only sprite fetch guards.
+   - Keep `LOADER_SEEN_KEY` only for compatibility unless removing it requires test cleanup.
+
+2. **Audit and optimize the sprite asset contract**
+   - Keep native 24 fps frames; do not synthesize 50 fps or duplicate frames.
+   - Measure the existing 249,330-byte `.v2` sheet after codec/decompression in desktop and mobile profile modes.
+   - If weak-device tests show decode lag, test a 180x204 88-frame sheet vs. the current 1880x1782 layout and document the benchmark before changing dimensions.
+   - Keep gutter >= 4 and sheet dimensions <= 2048x2048.
+
+3. **Reduce decode/startup cost**
+   - Prefer `img.decode()` before creating or starting GSAP playback.
+   - Draw frame 0 with poster hidden only after decode succeeds.
+   - Measure whether `imageSmoothingEnabled = false` or `"low"` improves weak-device frame cadence without visible quality loss.
+   - Do not remove the 600 ms deadline or 2400 ms ceiling unless replacement failsafe behavior is defined.
+
+4. **Validate frame cadence**
+   - Run canvas pixel sampling at 32 ms intervals on mobile and desktop viewports.
+   - Record dropped-frame or long-frame intervals during playback.
+   - Verify frame 0 starts promptly, frame 87 is clamped, and final frame/exit timing remain synchronized.
+   - Keep playback as one native-frame sequence rather than an interpolated video.
+
+5. **Preserve minimal fallback behavior**
+   - Keep Save-Data static poster fallback.
+   - Keep poster fallback for decode failure, canvas-context failure, request abort, and deadline timeout.
+   - Keep body-scroll restoration and no horizontal overflow.
+
+### Test plan
+
+- Unit: refreshes render and load the loader even when loader-seen storage is present.
+- Unit: Save-Data and decode failures remain static-poster fallbacks.
+- Unit: 600 ms deadline and 2400 ms hard ceiling still dismiss reliably.
+- E2E: reload starts a visible loader and canvas/poster on desktop and mobile.
+- E2E: canvas pixels change during playback and sheet response is 200/immutable.
+- E2E: weak-device E2E mode reports no stuck 2.4+ s fallback loops or scroll-lock leaks.
+
 - **Branch**: `feature/skeleton-backflip-loader` (branched off `main` at `96e593f`)
 - **Source Video**: `public/backflip.mp4` (`1920×1080`, `h264`, `yuv420p`, no alpha, `24.0 fps`, `91` frames `0..90`, `3.7917 s`, AAC audio)
 - **Primary Skill Reference**: `.agents/skills/skeleton-animation/SKILL.md` (do **not** modify the skill or duplicate its core utilities)

@@ -696,7 +696,7 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
     expect(mockCanvasCtx.drawImage.mock.calls.length).toBe(drawsBefore);
   });
 
-  it("skips initial loader overlay, scroll lock, and sheet fetch on subsequent refreshes in the same session", async () => {
+  it("shows initial loader and fetches sheet again after a refresh", async () => {
     window.sessionStorage.setItem(LOADER_SEEN_KEY, "1");
     document.body.style.overflow = "auto";
 
@@ -706,11 +706,11 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
       await vi.advanceTimersByTimeAsync(0);
     });
 
-    expect(document.getElementById("initial-loader-overlay")).toBeNull();
-    expect(document.body.style.overflow).toBe("auto");
+    expect(document.getElementById("initial-loader-overlay")).not.toBeNull();
+    expect(document.body.style.overflow).toBe("hidden");
     expect(
       decodedSrcs.some((src) => src.includes(BACKFLIP_SHEET_SRC))
-    ).toBe(false);
-    expect(findBackflipTweenCall()).toBeUndefined();
+    ).toBe(true);
+    expect(findBackflipTweenCall()).toBeDefined();
   });
 });

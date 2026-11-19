@@ -97,16 +97,6 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
     if (typeof window === "undefined") return;
 
     const stageEl = stageRef.current;
-    // On repeat loads within the same session, InitialLoader skips itself via
-    // useSyncExternalStore after hydration; avoid fetching the sprite sheet
-    // during child passive effects before that parent unmount commits.
-    if (
-      stageEl?.closest("#initial-loader-overlay") &&
-      document.documentElement.dataset.loaderSeen === "1"
-    ) {
-      return;
-    }
-
     const posterWrapperEl = posterWrapperRef.current;
     if (posterWrapperEl) {
       posterWrapperEl.style.display = "";
