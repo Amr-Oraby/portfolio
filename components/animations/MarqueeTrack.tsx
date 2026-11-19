@@ -20,8 +20,9 @@ export default function MarqueeTrack({ children }: MarqueeTrackProps) {
     let isVisible = typeof IntersectionObserver === "undefined";
 
     const syncPlayState = () => {
-      el.style.animationPlayState =
-        isVisible && !document.hidden ? "running" : "paused";
+      const shouldPlay = isVisible && !document.hidden;
+      if (el.style.animationPlayState === (shouldPlay ? "running" : "paused")) return;
+      el.style.animationPlayState = shouldPlay ? "running" : "paused";
     };
 
     let observer: IntersectionObserver | null = null;

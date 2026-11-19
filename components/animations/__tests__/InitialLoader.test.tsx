@@ -184,104 +184,6 @@ vi.mock("next/font/google", () => ({
   Fraunces: () => ({ className: "mock-fraunces" }),
 }));
 
-vi.mock("framer-motion", async () => {
-  const React = await import("react");
-
-  const MOTION_PROPS = new Set([
-    "initial",
-    "animate",
-    "exit",
-    "transition",
-    "variants",
-    "whileHover",
-    "whileTap",
-    "whileFocus",
-    "whileInView",
-    "viewport",
-    "layout",
-    "layoutId",
-    "onAnimationStart",
-    "onAnimationComplete",
-  ]);
-
-  function stripMotionProps(props: Record<string, unknown>) {
-    const clean: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(props)) {
-      if (!MOTION_PROPS.has(key)) {
-        clean[key] = value;
-      }
-    }
-    return clean;
-  }
-
-  const createMotionComponent = (tag: string) =>
-    React.forwardRef<HTMLElement, Record<string, unknown>>(
-      function MockMotionComponent({ children, ...rest }, ref) {
-        return React.createElement(
-          tag,
-          { ...stripMotionProps(rest), ref },
-          children as React.ReactNode
-        );
-      }
-    );
-
-  const motionCache = new Map<
-    string,
-    ReturnType<typeof createMotionComponent>
-  >();
-
-  const motion = new Proxy(
-    {},
-    {
-      get(_target, prop: string) {
-        let comp = motionCache.get(prop);
-        if (!comp) {
-          comp = createMotionComponent(prop);
-          motionCache.set(prop, comp);
-        }
-        return comp;
-      },
-    }
-  );
-
-  function AnimatePresence({
-    children,
-    onExitComplete,
-  }: {
-    children?: React.ReactNode;
-    mode?: string;
-    initial?: boolean;
-    onExitComplete?: () => void;
-  }) {
-    const childCount = React.Children.toArray(children).length;
-    const hadChildrenRef = React.useRef(childCount > 0);
-    const onExitCompleteRef = React.useRef(onExitComplete);
-
-    React.useEffect(() => {
-      onExitCompleteRef.current = onExitComplete;
-    }, [onExitComplete]);
-
-    React.useEffect(() => {
-      if (hadChildrenRef.current && childCount === 0) {
-        hadChildrenRef.current = false;
-        onExitCompleteRef.current?.();
-      } else if (childCount > 0) {
-        hadChildrenRef.current = true;
-      }
-    }, [childCount]);
-
-    return React.createElement(React.Fragment, null, children);
-  }
-
-  return {
-    motion,
-    AnimatePresence,
-    useReducedMotion: () => false,
-    MotionConfig: ({ children }: { children?: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
-  };
-});
-
 const CELL_WIDTH = 180;
 const CELL_HEIGHT = 204;
 const GUTTER = 4;
@@ -605,6 +507,9 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
     await act(async () => {
       await vi.advanceTimersByTimeAsync(1800);
     });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(700);
+    });
 
     expect(document.getElementById("initial-loader-overlay")).toBeNull();
     expect(document.body.style.overflow).not.toBe("hidden");
@@ -633,6 +538,9 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(2000);
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(700);
     });
 
     expect(document.getElementById("initial-loader-overlay")).toBeNull();
@@ -743,6 +651,9 @@ describe("InitialLoader & LoaderBackflipSkeleton", () => {
     // Past MAX_LOADER_MS (2400ms) + HOLD_COMPLETE_MS (150ms)
     await act(async () => {
       await vi.advanceTimersByTimeAsync(800);
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(700);
     });
 
     expect(document.getElementById("initial-loader-overlay")).toBeNull();

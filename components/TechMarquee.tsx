@@ -59,8 +59,6 @@ export default function TechMarquee() {
         <MarqueeTrack>
           {marqueeContent}
           {marqueeContent}
-          {marqueeContent}
-          {marqueeContent}
         </MarqueeTrack>
       </div>
 

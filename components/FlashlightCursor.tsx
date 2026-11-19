@@ -8,6 +8,7 @@ export default function FlashlightCursor() {
   const orbRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (document.hidden) return;
     // Only activate on devices with a fine pointer (mouse/trackpad), never on touch-only devices
     const isPointerFine = window.matchMedia(
       "(hover: hover) and (pointer: fine)"
@@ -21,6 +22,13 @@ export default function FlashlightCursor() {
     let mouseX = -1000;
     let mouseY = -1000;
     let isVisible = false;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        orb.style.opacity = "0";
+        isVisible = false;
+      }
+    };
 
     const updatePosition = () => {
       orb.style.transform = `translate3d(${mouseX - ORB_HALF_PX}px, ${mouseY - ORB_HALF_PX}px, 0)`;
@@ -53,11 +61,13 @@ export default function FlashlightCursor() {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);

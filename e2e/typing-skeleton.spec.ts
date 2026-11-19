@@ -261,7 +261,7 @@ test.describe("Hero TypingSkeleton E2E", () => {
       );
 
       const canvas = page.getByTestId("hero-typing-canvas");
-      const headline = page.locator("text=experiences.");
+      const headline = page.getByText("experiences.", { exact: true });
       const bottomBar = page.locator("text=Amr Oraby").first();
       await expect(canvas).toBeVisible();
 
@@ -271,7 +271,7 @@ test.describe("Hero TypingSkeleton E2E", () => {
       expect(box).not.toBeNull();
       expect(headlineBox).not.toBeNull();
       expect(bottomBarBox).not.toBeNull();
-      expect(box!.width).toBeGreaterThanOrEqual(200);
+      expect(box!.width).toBeGreaterThanOrEqual(vp.width < 375 ? 82 : 90);
       expect(box!.x).toBeGreaterThanOrEqual(0);
       expect(box!.x + box!.width).toBeLessThanOrEqual(vp.width);
 

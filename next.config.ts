@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ["lucide-react", "react-icons", "framer-motion"],
+    optimizePackageImports: ["lucide-react", "react-icons"],
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -44,6 +44,18 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/images/skeleton-hero-typing-poster.v1.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/pr1.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/pr2.webp",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/images/about-skeleton-suit-new.png",
         headers: immutableAssetHeaders,
       },
     ];

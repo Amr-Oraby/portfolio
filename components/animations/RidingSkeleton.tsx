@@ -95,6 +95,7 @@ export default function RidingSkeleton({
     let cancelled = false;
     const initialLoaderEl = document.getElementById("initial-loader-overlay");
     let loaderDone = !initialLoaderEl;
+    const shouldDeferRiderUntilScroll = true;
     let inPreloadZone = typeof IntersectionObserver === "undefined";
     let isVisible = typeof IntersectionObserver === "undefined";
     let loadStarted = false;
@@ -375,16 +376,21 @@ export default function RidingSkeleton({
     }
 
     if (typeof IntersectionObserver !== "undefined") {
+      const preloadRootMargin =
+        window.innerWidth < 768 ? "0px 0px" : "300px 0px";
       preloadObserver = new IntersectionObserver(
         (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
+          if (
+            entries.some((entry) => entry.isIntersecting) &&
+            (!shouldDeferRiderUntilScroll || window.scrollY > 120)
+          ) {
             inPreloadZone = true;
             preloadObserver?.disconnect();
             preloadObserver = null;
             maybeStartLoad();
           }
         },
-        { rootMargin: "900px 0px" }
+        { rootMargin: preloadRootMargin }
       );
       preloadObserver.observe(laneEl);
 

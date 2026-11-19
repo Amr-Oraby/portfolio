@@ -161,9 +161,9 @@ test.describe("Performance, CWV & Production Build Health", () => {
       { timeout: 15_000 }
     );
 
-    const lane = page.getByTestId("riding-skeleton-lane");
+    const lane = page.locator('[data-testid="riding-skeleton-lane"][data-riding-direction="left"]');
     await lane.scrollIntoViewIfNeeded();
-    const canvas = page.getByTestId("riding-skeleton-canvas");
+    const canvas = page.locator('[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]');
     await expect(canvas).toBeVisible();
 
     // Start measuring long tasks + rAF frame deltas specifically while riding runs
@@ -243,9 +243,9 @@ test.describe("Performance, CWV & Production Build Health", () => {
       { timeout: 15_000 }
     );
 
-    const lane = page.getByTestId("riding-skeleton-lane");
+    const lane = page.locator('[data-testid="riding-skeleton-lane"][data-riding-direction="left"]');
     await lane.scrollIntoViewIfNeeded();
-    const canvas = page.getByTestId("riding-skeleton-canvas");
+    const canvas = page.locator('[data-testid="riding-skeleton-canvas"][data-riding-direction="left"]');
     await expect(canvas).toBeVisible();
 
     // Wait until sprite starts moving
