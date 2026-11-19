@@ -27,8 +27,6 @@ export default function Marquee() {
         <MarqueeTrack>
           {renderItem(1)}
           {renderItem(2)}
-          {renderItem(3)}
-          {renderItem(4)}
         </MarqueeTrack>
       </div>
 

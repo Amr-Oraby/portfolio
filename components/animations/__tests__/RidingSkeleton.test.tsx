@@ -756,8 +756,8 @@ describe("RidingSkeleton & TechMarquee", () => {
     expect(marqueeContainer).not.toBeNull();
 
     const svgs = marqueeContainer?.querySelectorAll("svg") ?? [];
-    // 13 tech icons duplicated cleanly in the marquee track
-    expect(svgs.length).toBeGreaterThanOrEqual(13);
+    // Tech icons remain duplicated cleanly in the marquee track
+    expect(svgs.length).toBeGreaterThanOrEqual(26);
     expect(svgs.length % 13).toBe(0);
     // AuthJsIcon custom SVG remains present
     expect(
@@ -769,6 +769,7 @@ describe("RidingSkeleton & TechMarquee", () => {
   });
 
   it("animates the rider left-to-right when direction is right", async () => {
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
     render(<RidingSkeleton direction="right" />);
     emitIntersection(true);
 
@@ -791,6 +792,7 @@ describe("RidingSkeleton & TechMarquee", () => {
 
   it("continues animating canvas and running GSAP horizontal loop even when prefers-reduced-motion is reduce", async () => {
     window.matchMedia = createMatchMediaMock(true);
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
 
     render(<RidingSkeleton />);
     emitIntersection(true);
@@ -828,6 +830,7 @@ describe("RidingSkeleton & TechMarquee", () => {
   });
 
   it("waits for #initial-loader-overlay removal and intersection, decodes sprite, draws frame 0, and runs GSAP fromTo from trackWidth to -riderWidth with repeat -1", async () => {
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
     const loaderOverlay = document.createElement("div");
     loaderOverlay.id = "initial-loader-overlay";
     document.body.appendChild(loaderOverlay);
@@ -888,6 +891,7 @@ describe("RidingSkeleton & TechMarquee", () => {
   });
 
   it("pauses active tween on visibilitychange when hidden, resumes when visible, and disconnects observers + calls revert on unmount", async () => {
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
     const loaderOverlay = document.createElement("div");
     loaderOverlay.id = "initial-loader-overlay";
     document.body.appendChild(loaderOverlay);
@@ -947,6 +951,7 @@ describe("RidingSkeleton & TechMarquee", () => {
   });
 
   it("retries failed sprite decodes and falls back to static poster when retries exhaust", async () => {
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
     vi.useFakeTimers();
     try {
       HTMLImageElement.prototype.decode = vi.fn(function (

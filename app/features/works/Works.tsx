@@ -15,7 +15,7 @@ const projects: Project[] = [
     description: "A modern perfume e-commerce platform built with Next.js, Shadcn UI, Tailwind CSS, and Zod. Features a seamless purchasing flow, beautiful animations, carousels, and a comprehensive dashboard.",
     tags: ["Next.js", "Shadcn", "Tailwind", "E-commerce"],
     link: "https://isaria-perfume.shop",
-    image: "/images/pr1.png",
+    image: "/images/pr1.webp",
   },
   {
     index: "02",
@@ -24,7 +24,7 @@ const projects: Project[] = [
     description: "Umrah booking website including auth, Google & Facebook auth, online payments, order management, and a 70+ pages dashboard.",
     tags: ["Next.js", "Auth", "Payments", "Dashboard"],
     link: "https://almoatamer.vercel.app/",
-    image: "/images/pr2.png",
+    image: "/images/pr2.webp",
   },
 ];
 

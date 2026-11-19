@@ -4,10 +4,10 @@ import styles from "./hero.module.css";
 
 function HeroContent() {
   return (
-    <div className="p-3 px-5 flex flex-row items-center justify-between gap-2 md:gap-4 sm:pl-20 sm:pr-10 lg:pr-16 xl:pr-20">
+    <div className="p-3 px-5 flex flex-row items-center justify-between gap-1 sm:gap-4 sm:pl-20 sm:pr-10 lg:pr-16 xl:pr-20">
       {/* Headline */}
       <div
-        className={`${fraunces.className} relative z-10 w-fit min-w-0 flex-1 md:flex-none m-0  font-serif text-[50px] sm:text-[80px] lg:text-[100px] xl:text-[130px] 2xl:text-[170px]  leading-[0.92] text-foreground tracking-[-0.03em]`}
+        className={`${fraunces.className} relative z-10 w-fit min-w-0 flex-1 md:flex-none m-0 font-serif text-[50px] sm:text-[80px] lg:text-[100px] xl:text-[130px] 2xl:text-[170px] leading-[0.92] text-foreground tracking-[-0.03em]`}
       >
         <div className={`pl-1 font-light ${styles.headlineLine1}`}>
           Building
@@ -26,9 +26,9 @@ function HeroContent() {
 
       {/* Hero Coding Skeleton */}
       <div
-        className={`relative z-30 self-center md:self-auto shrink-0 w-[100px] sm:w-fit 2xl:pr-6 ${styles.imageEntrance}`}
+        className={`relative z-30 self-center md:self-auto shrink-0 w-[112px] min-[375px]:w-[120px] sm:w-[220px] md:w-fit 2xl:pr-6 ${styles.imageEntrance}`}
       >
-        <div className="w-[100px] sm:w-[245px] md:w-[245px] lg:w-[335px] xl:w-[390px] 2xl:w-[425px] aspect-[220/274] relative z-30">
+        <div className="w-[112px] min-[375px]:w-[120px] sm:w-[220px] md:w-[245px] lg:w-[335px] xl:w-[390px] 2xl:w-[425px] aspect-[220/274] relative z-30">
           <TypingSkeleton />
         </div>
       </div>

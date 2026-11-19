@@ -7,7 +7,6 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { jetbrainsMono } from "@/public/fonts/JetBrains";
 import { fraunces } from "@/public/fonts/Fraunces";
 import LoaderBackflipSkeleton from "@/components/animations/LoaderBackflipSkeleton";
@@ -258,23 +257,13 @@ export default function InitialLoader() {
   }
 
   return (
-    <AnimatePresence mode="wait" onExitComplete={handleExitComplete}>
-      {!isExiting && (
-        <motion.div
-          id="initial-loader-overlay"
-          key="initial-loader"
-          initial={{ opacity: 1, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{
-            y: "-100%",
-            transition: {
-              duration: 0.45,
-              ease: [0.76, 0, 0.24, 1], // Crisp luxury editorial curve
-            },
-          }}
-          className="fixed inset-0 z-[9999] flex flex-col justify-between bg-background text-foreground select-none overflow-hidden"
-          style={{ willChange: "transform" }}
-        >
+    <div
+      id="initial-loader-overlay"
+      className={`fixed inset-0 z-[9999] flex flex-col justify-between bg-background text-foreground select-none overflow-hidden transition-transform duration-[450ms] ease-[cubic-bezier(0.76,0,0.24,1)] ${
+        isExiting ? "-translate-y-full" : "translate-y-0"
+      }`}
+      style={{ willChange: isExiting ? "transform" : "auto" }}
+    >
           {/* Subtle Ambient Radial Glow */}
           <div
             className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20"
@@ -302,9 +291,10 @@ export default function InitialLoader() {
           </div>
 
           {/* Centerpiece Focal Point */}
-          <motion.div
-            exit={{ opacity: 0, y: -20, transition: { duration: 0.25, ease: "easeIn" } }}
-            className="relative z-10 flex flex-col items-center text-center px-4 my-auto"
+          <div
+            className={`relative z-10 flex flex-col items-center text-center px-4 my-auto transition-all duration-[250ms] ease-in ${
+              isExiting ? "opacity-0 -translate-y-5" : "opacity-100 translate-y-0"
+            }`}
           >
             {/* Skeleton Stage */}
             <div className="relative mb-5 sm:mb-6">
@@ -362,7 +352,7 @@ export default function InitialLoader() {
                 <span>{statusText}</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Bottom Editorial Metadata Bar */}
           <div
@@ -372,8 +362,6 @@ export default function InitialLoader() {
             <span className="hidden sm:inline-block">EST. 2018</span>
             <span>FIG. 000 / INIT</span>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   );
 }
