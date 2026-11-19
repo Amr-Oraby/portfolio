@@ -11,20 +11,17 @@ import Image from "next/image";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
 
-const DESKTOP_SHEET_SRC = "/images/skeleton-backflip-sheet.v2.webp";
-const MOBILE_SHEET_SRC = "/images/skeleton-backflip-sheet-mobile.v3.webp";
-const DESKTOP_POSTER_SRC = "/images/skeleton-backflip-poster.v2.webp";
-const MOBILE_POSTER_SRC = "/images/skeleton-backflip-poster-mobile.v3.webp";
+const SHEET_SRC = "/images/skeleton-backflip-sheet.v3.webp";
+const POSTER_SRC = "/images/skeleton-backflip-poster.v3.webp";
 const FALLBACK_EMBLEM_SRC = "/images/skull-logo.png";
 
-const FRAME_COUNT = 88;
-const GRID_COLS = 10;
-const GRID_ROWS = 9;
+const FRAME_COUNT = 48;
+const GRID_COLS = 8;
+const GRID_ROWS = 6;
 const CELL_WIDTH = 180;
 const CELL_HEIGHT = 204;
 const GUTTER = 4;
 
-const BACKFLIP_FPS = 24;
 const BACKFLIP_DURATION_S = 1.45;
 const DEFAULT_START_DEADLINE_MS = 600;
 
@@ -60,22 +57,6 @@ function getSaveDataServerSnapshot(): boolean {
   return false;
 }
 
-function subscribeCompactViewport(onStoreChange: () => void) {
-  if (typeof window === "undefined") return () => {};
-  const media = window.matchMedia("(max-width: 767px)");
-  media.addEventListener("change", onStoreChange);
-  return () => media.removeEventListener("change", onStoreChange);
-}
-
-function getCompactViewportSnapshot(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(max-width: 767px)").matches;
-}
-
-function getCompactViewportServerSnapshot(): boolean {
-  return false;
-}
-
 export interface LoaderBackflipSkeletonProps {
   onFinished?: () => void;
   startDeadlineMs?: number;
@@ -83,7 +64,7 @@ export interface LoaderBackflipSkeletonProps {
 }
 
 /**
- * Renders the one-shot 88-frame backflipping skeleton for InitialLoader.
+ * Renders the one-shot 48-frame backflipping skeleton for InitialLoader.
  * Shows the frame-0 poster underlay until the sprite sheet decodes within
  * the start deadline and paints frame 0 onto the canvas.
  */
@@ -106,14 +87,7 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
     getSaveDataSnapshot,
     getSaveDataServerSnapshot
   );
-  const isCompactViewport = useSyncExternalStore(
-    subscribeCompactViewport,
-    getCompactViewportSnapshot,
-    getCompactViewportServerSnapshot
-  );
   const showStaticPoster = saveData || loadFailed;
-  const sheetSrc = isCompactViewport ? MOBILE_SHEET_SRC : DESKTOP_SHEET_SRC;
-  const posterSrc = isCompactViewport ? MOBILE_POSTER_SRC : DESKTOP_POSTER_SRC;
 
   useEffect(() => {
     onFinishedRef.current = onFinished;
@@ -146,8 +120,11 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    if (canvas.width !== CELL_WIDTH) canvas.width = CELL_WIDTH;
-    if (canvas.height !== CELL_HEIGHT) canvas.height = CELL_HEIGHT;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const backingWidth = CELL_WIDTH * pixelRatio;
+    const backingHeight = CELL_HEIGHT * pixelRatio;
+    if (canvas.width !== backingWidth) canvas.width = backingWidth;
+    if (canvas.height !== backingHeight) canvas.height = backingHeight;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) {
@@ -169,7 +146,6 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
     let gsCtx: gsap.Context | null = null;
     let tween: gsap.core.Tween | null = null;
     let lastFrameIdx = -1;
-    let lastDrawTime = -Infinity;
 
     const clearDeadline = () => {
       if (deadlineTimer !== null) {
@@ -193,7 +169,7 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
       const sx = col * strideX + GUTTER;
       const sy = row * strideY + GUTTER;
 
-      ctx.clearRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
+      ctx.clearRect(0, 0, backingWidth, backingHeight);
       ctx.drawImage(
         sheetImg,
         sx,
@@ -202,8 +178,8 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
         srcCellH,
         0,
         0,
-        CELL_WIDTH,
-        CELL_HEIGHT
+        backingWidth,
+        backingHeight
       );
       lastFrameIdx = frameIdx;
     };
@@ -235,8 +211,8 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
       sheetImg.onerror = null;
       pendingImg = null;
 
-      ctx.imageSmoothingEnabled = !isCompactViewport;
-      ctx.imageSmoothingQuality = isCompactViewport ? "low" : "high";
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       drawFrame(0);
 
       if (posterWrapperEl) {
@@ -252,9 +228,6 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
           repeat: 0,
           paused: document.hidden,
           onUpdate: () => {
-            const now = performance.now();
-            if (now - lastDrawTime < 1000 / BACKFLIP_FPS) return;
-            lastDrawTime = now;
             const idx = Math.min(
               FRAME_COUNT - 1,
               Math.max(0, Math.floor(playhead.frame))
@@ -289,7 +262,7 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
     if (typeof img.decode !== "function") {
       img.onload = finalizeReady;
     }
-    img.src = sheetSrc;
+    img.src = SHEET_SRC;
 
     if (typeof img.decode === "function") {
       img.decode().then(finalizeReady, abortAndFallback);
@@ -322,7 +295,7 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
         posterWrapperEl.style.display = "";
       }
     };
-  }, [isCompactViewport, sheetSrc, showStaticPoster, startDeadlineMs]);
+  }, [showStaticPoster, startDeadlineMs]);
 
   return (
     <div
@@ -345,7 +318,7 @@ const LoaderBackflipSkeleton = memo(function LoaderBackflipSkeleton({
       >
         <Image
           data-testid="loader-backflip-poster"
-          src={posterFailed ? FALLBACK_EMBLEM_SRC : posterSrc}
+          src={posterFailed ? FALLBACK_EMBLEM_SRC : POSTER_SRC}
           alt=""
           width={CELL_WIDTH}
           height={CELL_HEIGHT}

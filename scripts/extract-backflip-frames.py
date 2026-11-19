@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Extract, clean, and pack the 88-frame skeleton backflip sprite sheet.
+"""Extract, clean, and pack the 48-frame skeleton backflip sprite sheet.
 
-Reads frames [0..87] (0-indexed) from `public/backflip.mp4`, removes the white
-background, curved rotation/motion lines (f=18..62), black ground oval and
-airborne shadows (f=0..87), and enclosed background pockets while preserving
+Reads frames [0..87] (0-indexed) from `public/backflip.mp4`, subsamples 48
+representative frames, removes the white background, curved rotation/motion
+lines (f=18..62), black ground oval and airborne shadows (f=0..87), and
+enclosed background pockets while preserving
 skull, ankles, toes, fingers, clavicles, ribs, vertebrae, and mid-gray far limbs,
 then exports:
-  - frames/backflip/frame-1.png .. frames/backflip/frame-88.png (180x204 RGBA)
-  - public/images/skeleton-backflip-sheet.v2.webp (1880x1908, 10x9, 4px gutters)
-  - public/images/skeleton-backflip-poster.v2.webp (180x204 from frame 1)
+  - frames/backflip/frame-1.png .. frames/backflip/frame-48.png (180x204 RGBA)
+  - public/images/skeleton-backflip-sheet.v3.webp (1504x1272, 8x6, 4px gutters)
+  - public/images/skeleton-backflip-poster.v3.webp (180x204 from frame 1)
 
 Reuses core ffmpeg/CCL/scaling/WebP helpers from
 `.agents/skills/skeleton-animation/scripts/extract_sprite.py`.
@@ -33,17 +34,17 @@ except ImportError:
 
 START_FRAME = 0
 END_FRAME = 87
-FRAME_COUNT = END_FRAME - START_FRAME + 1  # 88
+FRAME_COUNT = 48
 
 CELL_W = 180
 CELL_H = 204
 GUTTER = 4
 STRIDE_W = CELL_W + 2 * GUTTER  # 188
 STRIDE_H = CELL_H + 2 * GUTTER  # 212
-COLS = 10
-ROWS = 9
+COLS = 8
+ROWS = 6
 SHEET_W = COLS * STRIDE_W  # 1880
-SHEET_H = ROWS * STRIDE_H  # 1908
+SHEET_H = ROWS * STRIDE_H  # 1272
 
 # Working ROI covering full backflip motion (x=[480..1480), y=[0..1040))
 ROI_X0, ROI_X1 = 480, 1480
@@ -542,10 +543,8 @@ def main() -> int:
 
     video_path = repo_root / "public" / "backflip.mp4"
     frames_dir = repo_root / "frames" / "backflip"
-    sheet_path = repo_root / "public" / "images" / "skeleton-backflip-sheet.v2.webp"
-    poster_path = repo_root / "public" / "images" / "skeleton-backflip-poster.v2.webp"
-    mobile_sheet_path = repo_root / "public" / "images" / "skeleton-backflip-sheet-mobile.v3.webp"
-    mobile_poster_path = repo_root / "public" / "images" / "skeleton-backflip-poster-mobile.v3.webp"
+    sheet_path = repo_root / "public" / "images" / "skeleton-backflip-sheet.v3.webp"
+    poster_path = repo_root / "public" / "images" / "skeleton-backflip-poster.v3.webp"
 
     if not video_path.exists():
         print(f"Missing source video: {video_path}", file=sys.stderr)
@@ -554,6 +553,8 @@ def main() -> int:
     vw, vh = core.get_video_dims(video_path)
     rgb = core.load_frames_rgb(video_path, START_FRAME, END_FRAME, 1, vw, vh)
     rgba_roi, stats = process_all_frames(rgb, core)
+    source_indices = np.linspace(0, len(rgba_roi) - 1, FRAME_COUNT).round().astype(int)
+    rgba_roi = rgba_roi[source_indices]
 
     scaled, cw, ch = core.pad_and_scale(rgba_roi, CELL_W, CELL_H)
     assert (cw, ch) == (CELL_W, CELL_H), f"Unexpected cell dims {cw}x{ch}"
@@ -570,19 +571,6 @@ def main() -> int:
     )
     assert pack_stats["cols"] == COLS and pack_stats["rows"] == ROWS, f"Grid mismatch: {pack_stats}"
     assert pack_stats["sheet"] == f"{SHEET_W}x{SHEET_H}", f"Sheet dim mismatch: {pack_stats}"
-
-    mobile_scaled, mobile_cw, mobile_ch = core.pad_and_scale(rgba_roi, 120, 136)
-    assert (mobile_cw, mobile_ch) == (120, 136)
-    mobile_pack_stats = core.pack_and_encode_webp(
-        mobile_scaled,
-        GUTTER,
-        mobile_sheet_path,
-        mobile_poster_path,
-        is_monochrome=True,
-        allow_4096=False,
-        benchmark_webp=False,
-    )
-    assert mobile_pack_stats["sheet"] == "1280x1296"
 
     # Verify zero alpha in all 4px gutters on the actual decoded WebP
     raw_dec = core.run_ffmpeg(["-i", str(sheet_path), "-f", "rawvideo", "-pix_fmt", "rgba", "pipe:1"])

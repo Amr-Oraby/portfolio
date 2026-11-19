@@ -189,7 +189,7 @@ test.describe("InitialLoader Backflip Skeleton E2E", () => {
       pageErrors.push(err.message);
     });
 
-    await page.route("**/skeleton-backflip-sheet*.v*.webp", (route) =>
+    await page.route("**/skeleton-backflip-sheet.v3.webp", (route) =>
       route.abort()
     );
 
