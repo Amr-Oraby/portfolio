@@ -58,27 +58,6 @@
   transition-delay: 0.46s;
 }
 
-.cardsGrid {
-  perspective: 1200px;
-}
-
-/* Accordion Cards 3D Perspective Staggered Reveal */
-.cardItem {
-  opacity: 0;
-  transform: translateY(32px) rotateX(6deg) scale(0.97);
-  transform-origin: top center;
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Staggered Delays across the 6 cards */
-.cardItem1 { transition-delay: 0.16s; }
-.cardItem2 { transition-delay: 0.26s; }
-.cardItem3 { transition-delay: 0.36s; }
-.cardItem4 { transition-delay: 0.46s; }
-.cardItem5 { transition-delay: 0.56s; }
-.cardItem6 { transition-delay: 0.66s; }
-
 /* In-View Active State: All elements smoothly settle into their exact original positions */
 .inView .sectionBadge,
 .inView .headingLine1,
@@ -94,13 +73,31 @@
   transform: scaleX(1);
 }
 
-.inView .cardItem {
-  opacity: 1;
-  transform: translateY(0) rotateX(0deg) scale(1);
+.paperCard {
+  isolation: isolate;
+  outline: 1px solid rgba(23, 23, 23, 0.06);
+  outline-offset: 1px;
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.05),
+    2px 2px 0 rgba(23, 23, 23, 0.025);
 }
 
-/* Ensure hover interactions on cards respond immediately with 0 delay */
-.cardItem:hover {
-  transition-delay: 0s !important;
-  transition-duration: 0.3s !important;
+.paperCard::after {
+  content: "";
+  position: absolute;
+  inset: 3px 2px 1px 3px;
+  pointer-events: none;
+  border: 1px solid rgba(23, 23, 23, 0.10);
+  border-radius: 1px 3px 2px 1px;
+  transform: rotate(-0.12deg);
+}
+
+.dark .paperCard {
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.24),
+    2px 2px 0 rgba(233, 229, 216, 0.08);
+}
+
+.dark .paperCard::after {
+  border-color: rgba(243, 240, 232, 0.12);
 }
