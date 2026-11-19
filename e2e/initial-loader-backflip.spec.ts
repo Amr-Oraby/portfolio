@@ -27,7 +27,7 @@ test.describe("InitialLoader Backflip Skeleton E2E", () => {
       pageErrors.push(err.message);
     });
     page.on("response", (res) => {
-      if (res.url().includes("skeleton-backflip-sheet.v2.webp")) {
+      if (res.url().includes("skeleton-backflip-sheet")) {
         sheetResponses.push({
           url: res.url(),
           status: res.status(),
@@ -189,7 +189,7 @@ test.describe("InitialLoader Backflip Skeleton E2E", () => {
       pageErrors.push(err.message);
     });
 
-    await page.route("**/skeleton-backflip-sheet.v2.webp", (route) =>
+    await page.route("**/skeleton-backflip-sheet*.v*.webp", (route) =>
       route.abort()
     );
 
